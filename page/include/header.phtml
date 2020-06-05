@@ -1,0 +1,16 @@
+<!-- Informações sobre o usuário -->
+<?php $usr = HelperAuth::getUser();if(!empty($usr)):?>
+	<div id="user">
+		<p><?php echo $usr['nome']?></p>
+	</div>
+<?php endif?>
+<div id="header_inner">	
+	<hgroup>
+		<a href="http://plug-se.com/sites/compras/">
+			<img alt="favicon" src="<?php echo URI.PATH_IMG.'favicon.png'?>">
+		</a>
+		<h1><?php echo Start::$siteInfo->print_title()?></h1>
+	</hgroup>
+	<a id="open_menu">&#9776;</a>
+	<menu><?php include_once FILE_MENU?></menu>
+</div>

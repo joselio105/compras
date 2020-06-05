@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title><?php echo Start::$siteInfo->get_site_title()?></title>
+        <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<?php echo Start::$siteInfo?>	
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="<?php echo PATH_JS?>main.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="<?php echo PATH_EXTRA?>ckeditor/ckeditor.js"></script>
+        <link rel="stylesheet" href="<?php echo PATH_CSS?>main.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo PATH_CSS?>_mkr_buttons.css" type="text/css" />
+		<link rel="icon" href="<?php echo URI.PATH_IMG?>favicon.png" />
+	</head>
+
+	<body>
+	<h1 id="h01"></h1>
+		<header><?php include PATH_INCLUDE.'header.phtml';?>
+			
+		</header>
+		
+		<main><?php include_once VIEW_FILE?></main>
+		<footer><?php include_once PATH_INCLUDE.'footer.phtml';?></footer>
+	</body>
+	
+</html>

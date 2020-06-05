@@ -1,0 +1,327 @@
+/*
+*	RESET
+*/
+* {
+	border: 0;
+	margin: 0;
+	padding: 0;	
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+body{
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+ a{
+ 	text-decoration: none;
+ }
+
+
+/*
+*	ELEMENTOS BÁSICOS
+*/
+header, footer{
+	width: 100%;
+	min-height: 2em;
+	margin: 2em 0;
+}
+
+#header_inner{
+	width: 100%;
+	max-width: var(--screen_width);
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+header img{
+	height: 5em;	
+}
+
+#logo_link{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+#open_menu{
+	display: none;
+	font-size: 50px;
+	cursor: pointer;
+	z-index: 100;
+}
+
+menu{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+menu ul{
+	list-style: none;
+	display: flex;
+}
+
+menu li{
+	display: flex;
+	height: 50px;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 3em;
+}
+
+menu a{
+	color: var(--text_norm);
+	font-variant: small-caps;
+	display: flex;
+	align-items: center;	
+	width: 100%;
+	height: 100%;
+	text-transform: capitalize; 
+}
+
+menu a:hover{
+	color: var(--text_alte);
+}
+
+header menu.open{
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: var(--sec_light);
+	width: 200px;
+	transform: translate(0, 0);
+}
+/*Main*/
+
+main{
+	width: 100%;
+	max-width: var(--screen_width);
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.image_container{
+	width: 300px;
+	height: 300px;
+	margin: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.image_container p{
+	text-align: center;
+}
+
+.images{
+	width: 100%;
+	height: 300px;
+	background-position: right center; 
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+main h2{
+	background-color: var(--text_alte);
+	color: var(--text_light);
+	text-transform: uppercase;
+	font-size: 1.2em;
+	font-weight: normal;
+	padding: .5em;
+	width: 100%
+}
+
+main h3{
+	color: var(--text_alte);
+	text-transform: uppercase;
+	font-size: 1.2em;
+	font-weight: bold;
+	border-bottom: .1em solid var(--text_alte);
+	margin: 1em 0 .5em 0;
+	width: 100%
+}
+
+main h4{
+	background-color: var(--sec_dark);
+	color: var(--text_light);
+	text-transform: uppercase;
+	font-size: 1em;
+	padding: .5em;
+	width: 100%
+}
+
+main p{
+	text-align: justify;
+	margin-bottom: 1em;
+	line-height: 1.5em;
+	width: 100%
+}
+
+main p a, main li a{
+	color: var(--text_alte);
+}
+
+main a:hover{
+	color: var(--text_norm);
+}
+
+main ul{
+	list-style: none;
+}
+
+main svg{
+	fill: var(--text_norm);
+	min-height: 48px;
+	min-width: 48px;
+	margin: 1px;
+}
+
+main a svg{
+	fill: var(--text_norm);
+}
+
+main a:hover svg{
+	fill: var(--text_alte);
+}
+
+main li svg{
+	display: none;
+}
+
+figure{
+	width: 1200px;
+	height: 400px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: -10;
+	margin: -7em 0 2em 0;
+}
+
+picture{
+	margin: 0 1em 1em 0;
+	max-width: 100%;
+}
+
+picture img{
+	width: 285px;
+}
+
+picture p{
+	margin: .5em;
+}
+
+/*
+* TABELAS
+*/
+
+table{
+	width: 100%;
+}
+
+table, tr, th, td{
+	border: 1px solid var(--sec_norm);
+	border-collapse: collapse;
+	text-align: left;
+	font-weight: normal;
+}
+
+th{
+	background-color: var(--text_alte);
+	color: var(--text_light);
+}
+
+#table{
+	width: 100%;
+	overflow-x: auto;
+}
+
+.table_title{
+	padding: .5em;
+	background-color: var(--sec_light);
+	color: var(--text_norm);
+	font-weight: bold;
+}
+
+.line_title{
+	width: 50px!important;
+}
+
+.line_norm{
+	min-width: 200px;
+	width: calc((100%-200px)/3);
+}
+
+/*
+* TABELAS
+*/
+
+.notable{
+	max-width: 100%;
+	margin: 0;
+	border: 0!important;
+}
+
+.notable, .notable thead, .notable tbody, .notable tr, .notable th, .notable td {
+	display: block;
+}
+
+.notable th{
+	position: absolute;
+	top: -9999;
+	left: -9999;
+}
+
+.notable td{
+	position: relative;
+	padding-left: 50%;
+}
+
+.notable td:before{
+	position: absolute;
+	left: .5em;
+	content: attr(data-th);
+	font-weight: bold;
+}
+
+/*
+* --------------- FOOTER -------------------
+*/
+#footer_inner{
+	width: 100%;
+	max-width: var(--screen_width);
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+}
+
+footer a img{
+	width: 50px;
+	height: 50px; 
+	opacity: .4;
+	margin-right: 50px;
+}
+
+footer a:hover img{
+	opacity: 1;
+}
+
+footer #logo{
+	background-color: var(--sec_norm);	
+	box-shadow: none;
+}
+
+footer h1, footer h2{
+	font-size: .8em;
+	font-weight: normal;
+}
+
+footer a{
+	color: var(--sec_dark);
+}

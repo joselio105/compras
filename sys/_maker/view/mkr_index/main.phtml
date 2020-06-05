@@ -1,0 +1,49 @@
+<?php 
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Configurações</h2>
+<?php echo HelperView::printAlert()?>
+
+<?php foreach ($data['configs'] as $config):?>
+    <diV class="quadro" id="arquivo">
+    	<summary>
+    		<h3>Configurações de <?php echo $config?></h3>
+    	</summary>
+    	<div id="lista">
+        	<?php foreach ($data['config'][$config] as $name=>$value):?>
+        		<div class="card">
+        			<?php echo $data['link'][$config][$name]?>
+        			<div class="with_label" id="<?php echo $name?>"><?php echo $value?></div>
+        		</div>
+        	<?php endforeach?>
+    	</div>
+    </div>
+<?php endforeach?>
+
+<diV class="quadro" id="arquivo">
+	<summary>
+    	<h3>Configurações de Permissões</h3>
+    	<?php echo $data['link']['permition']?>
+	</summary>
+    <div id="lista">
+    	<?php foreach ($data['permition'] as $name=>$value):?>
+    		<div class="card with_label" id="<?php echo $name?>"><?php echo $value?></div>
+		<?php endforeach?>
+    </div>
+</div>
+
+<?php foreach ($data['menus'] as $menuType):?>
+    <diV class="quadro" id="arquivo">
+    	<summary>
+    		<h3>Menu <?php echo ucfirst($menuType)?></h3>
+    		<nav><?php echo $data['link']['add'][$menuType]?></nav>
+    	</summary>
+    	<div id="lista">
+    		<?php foreach($data['card']['menu'][$menuType] as $card)
+    		    echo $card;
+    		?>
+    	</div>
+    </div>
+<?php endforeach?>

@@ -1,0 +1,17 @@
+<?php 
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Botões</h2>
+<?php echo HelperView::printAlert()?>
+        
+<div id="commands">
+	<?php echo $data['link']['add']?>
+</div>
+        
+<?php if(key_exists('card', $data)):?>
+	<div id="lista">
+    	<?php foreach ($data['card'] as $c)echo $c;?>
+	</div>
+<?php endif?>

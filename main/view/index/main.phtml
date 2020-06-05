@@ -1,0 +1,41 @@
+<?php
+/**
+ * @version 26/11/2018 10:23:51
+ * @author jose_helio@gmail.com
+ *
+ */
+
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Compras</h2>
+<?php echo HelperView::printAlert()?>
+
+<div id="commands">
+	<?php echo $data['link']['add']?>
+	<?php echo $data['link']['hst']?>
+	<?php include_once PATH_INCLUDE.'busca.phtml';?>
+</div>
+
+<?php if(key_exists('lista', $data)):?>
+	<table>
+    	<tr>
+            <th></th>
+            <th>Produto</th>
+            <th>Último Preço</th>
+      	</tr>
+      	<?php foreach ($data['lista'] as $l):?>
+        <tr>
+            <td>
+            	<?php echo $data['link']['check'][$l['id']]?>
+            	<?php echo $data['link']['del'][$l['id']]?>
+            </td>            
+            <td><?php echo $l['nome']?></td>
+            <td><?php echo HelperData::printLikeMoney($l['lastPreco'])?></td>
+        </tr>
+        <?php endforeach?>
+    </table>
+
+<?php endif;?>
+

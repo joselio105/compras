@@ -1,0 +1,71 @@
+/*Formulário*/
+
+form{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 100%;
+}
+
+form>div{
+	margin-bottom: .5em;
+}
+
+label{
+	display: block;
+	min-width: 75px;
+	background-color: var(--sec_light);
+	color: var(--sec_dark);
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: .75em;
+	padding: .2em;
+	
+}
+
+input, textarea, select{
+	border: 1px solid var(--sec_dark);
+	width: 100%;
+	font-size: 1em;
+	padding: .5em;
+	min-height: 50px;
+}
+
+input[type=button], input[type=submit], .button{
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	text-transform: uppercase;
+	color: var(--text_alte);
+	background-color: var(--sec_norm);
+	border: 0;
+	box-shadow: var(--shadow);
+	min-width: 50px;
+	min-height: 50px;
+	width: 20%;
+	margin: 1em 0;
+}
+
+input[type=button]:hover, input[type=submit]:hover, a.button:hover{
+	color: var(--text_norm);
+	background-color: var(--text_alte);
+	box-shadow: var(--press);
+}
+
+#form_del{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#form_del p{
+	width: 100%;
+}
+
+#form_del p.exclusao{
+	width: 50%;
+}
+
+.exclusao label{
+	display: none;
+}

@@ -1,0 +1,58 @@
+{
+    "config": {
+    	"name":"config",
+        "ctlr": "mkr_index",
+        "act": "main",
+        "title": "Gerencia as configura\u00e7\u00f5es do site",
+        "permitions": null
+    },
+    "controllers": {
+        "name":"controllers",
+        "ctlr": "mkr_custom",
+        "act": "controller",
+        "title": "Gerencia controllers, actions e views do sistema",
+        "permitions": null
+    },
+    "models": {
+        "name":"models",
+        "ctlr": "mkr_custom",
+        "act": "model",
+        "title": "Gerencia models do sistema",
+        "permitions": null
+    },
+    "forms": {
+        "name":"forms",
+        "ctlr": "mkr_custom",
+        "act": "formulario",
+        "title": "Gerencia formul\u00e1rios do sistema",
+        "permitions": null
+    },
+    "cards": {
+        "name":"cards",
+        "ctlr": "mkr_custom",
+        "act": "card",
+        "title": "Gerencia cards do sistema",
+        "permitions": null
+    },
+    "botoes": {
+        "name":"botoes",
+        "ctlr": "mkr_buttons",
+        "act": "main",
+        "title": "Gerencia botoes do sistema",
+        "permitions": null
+    },
+    "mem\u00f3ria": {
+        "name":"mem\u00f3ria",
+        "ctlr": "mkr_index",
+        "act": "memoria",
+        "title": "Exibe a mem\u00f3ria consumida em cada pasta",
+        "permitions": null
+    },
+    "teste": {
+        "name":"teste",
+        "ctlr": "mkr_index",
+        "act": "teste",
+        "title": "Vizualiza o CSS nos elementos b\u00e1sicos",
+        "permitions": null
+    }
+}

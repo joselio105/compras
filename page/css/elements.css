@@ -1,0 +1,313 @@
+.card{
+	height: auto;	
+	width: 285px;
+	margin: 0 7.5px 15px 7.5px;
+	padding: 0;
+	border: 1px solid var(--sec_norm);
+	box-shadow: var(--shadow);
+	overflow-y: visible;
+	overflow-x: visible;
+	display: flex;
+	flex-direction: row;
+	flex-shrink: 0;
+	align-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.card h3, .card h4, .card h5{
+	background-color: var(--sec_light);
+	color: var(--text_alte);
+	width: 100%;
+	font-size: 1em;
+	padding: .5em;
+	margin: 0;
+	border-bottom: 1px solid var(--text_alte);
+	text-transform: none;
+}
+
+.card>nav{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+}
+
+.card>nav .button{
+	margin: .5em;
+}
+
+.with_label:before{
+	content: attr(id)': ';
+	font-weight: bold;
+	padding: 0 .75em;
+	line-height: 1em;
+	margin: 0;
+}
+
+.crono{
+	justify-content: space-between;
+}
+
+#commands{
+	display: flex;
+	justify-content: space-between;
+	align-content: space-between;
+	width: 100%;
+	flex-wrap: wrap;
+	margin-bottom: 1em;
+}
+#commands input[type=button]{
+	margin-right: 1em;
+}
+
+.command{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-content: space-around;
+	min-width: 150px;
+	margin-right: .5em;
+}
+
+.command .button{
+	width: 100%;
+}
+
+#busca{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex-grow: 2;
+	justify-content: flex-start;
+	background-color: var(--sec_light);
+	margin-right: 10px;
+	width: auto;
+}
+
+#busca label{
+	width: 100%;
+}
+#busca input{
+	width: 85%;	
+}
+#busca svg{
+	width: 14%;
+}
+
+#form_busca{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#form_busca input{
+	width: 100%;
+	margin: 0;
+}
+
+#form_busca p{
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+.busca{
+	display: flex;
+	flex-wrap: wrap;	
+	flex-grow: 0;
+}
+
+#lista{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+/*
+* ---------------- ALERTA ----------------------
+*/
+
+.alerta{
+	width: 100%;
+	background-color: var(--alert_back);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	padding: 30px 10px 0 10px;
+	margin: 10px 0 25px 0;
+	box-shadow: var(--shadow);
+	background-image: url(../img/icons/msg_alert.svg);
+	background-size: 3em;
+	background-repeat: no-repeat;
+	background-position: center 1em;
+}
+.alerta p{
+	color: var(--alert_text);
+	text-align: center;
+	display: block;
+	width: 100%;
+	font-size: 1.2em;
+	padding: 2em 0 .5em 0;
+}
+.alerta input{
+	margin-top: 0;
+}
+
+#logo a{
+	font-family: hobo;
+	font-size: 30px;
+	padding: 10px;
+	font-variant: small-caps;
+	color: var(--alert_back);
+}
+
+#logo{
+	background-color: var(--sec_dark);
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin: 0 10px;
+	display: flex;
+	align-content: flex-start;
+	justify-content: space-around;
+	box-shadow: var(--shadow);
+}
+
+/*
+* ---------------- TOOLTIPs ----------------------
+*/
+.tooltip {
+	position: relative;
+}
+.tooltip .ttp_text{
+	display: none;
+	background-color: var(--text_light);
+	color: var(--text_norm);
+	top: 100%;
+	left: 5%;
+	width: 250px;
+	font-size: .75em;
+	padding: .5em;
+	text-transform: none;
+	font-variant: small-caps;
+	font-family: sans-serif;
+	font-size: 12px;
+	overflow: visible;
+	boder-color: var(--sec_dark);
+	border-style: solid;
+	border-width: 0 1px 1px 0;
+}
+.tooltip span b{
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid var(--sec_norm);
+}
+
+.tooltip:hover .ttp_text {
+	display: block;
+	position: absolute;
+	z-index: 90;
+}
+
+/*
+* --------------- CHECKBOXES -------------------
+*/
+
+.checkboxes input[type=radio], .checkboxes input[type=checkbox]{
+    display:none; 
+}
+ 
+.checkboxes label {
+    cursor: pointer;
+}
+
+
+.checkboxes input[type="radio"] + label:before, .checkboxes input[type="checkbox"] + label:before {
+    border: 1px solid #FFF;
+    border-radius:4px;
+    padding:0;
+    content: "\00A0";
+    display: inline-block;
+    font-size: 2.5em;
+    height: 1.2em;
+    width: 1.2em;
+    margin: 0 .5em;
+    vertical-align: top;
+}
+
+.checkboxes input[type="radio"]:checked + label:before{
+	background-color: #FFF;
+	color: #000;
+	content: "\2716";
+	text-align: center;
+}
+ 
+.checkboxes #alerta1:checked + label:before, .checkboxes input[type="checkbox"]:checked + label:before {
+    color: #090;
+    content: "\2713";
+}
+
+.checkboxes #alerta0:checked + label:before{
+    color: #900;
+    content: "\2718";	
+}
+
+/*
+* ---------------- TOOLs ----------------------
+*/
+#tools{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+#toolBody{
+	width: 900px;
+}
+
+#toolMenu{
+	width: 275px;
+	margin-right: 25px;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+#toolMenu li{
+	max-width: 100%;
+	padding: .5em 0;
+}
+
+#toolMenu ul li{
+	margin-left: 1em;
+	list-style: disc;
+}
+
+#toolMenu ul li ul li{
+	list-style: square;
+}
+
+.selected{
+	color: var(--text_norm);
+	border-bottom: 1px dotted var(--text_alte);
+	display: block;
+}
+
+#user{
+	background-color: var(--text_norm);
+	color: var(--sec_norm);
+	opacity: .2;
+	width: 100%;
+	max-width: var(--screen_width);
+	margin: auto;
+	padding: .5em;
+	font-size: .8em;
+	text-align: right;
+}

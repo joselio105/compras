@@ -1,0 +1,36 @@
+<?php
+/**
+ * @version 02/05/2019 13:32:17
+ * @author jose_helio@gmail.com
+ *
+ */
+
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+<h2>Corredores</h2>
+<?php echo HelperView::printAlert()?>
+
+<div id="commands">
+	<?php echo $data['link']['add']?>
+	<?php include_once PATH_INCLUDE.'busca.phtml';?>
+</div>
+
+<?php if(key_exists('lista', $data)):?>
+	<table>
+    	<tr>
+            <th></th>
+            <th>Tipo</th>
+      	</tr>
+      	<?php foreach ($data['lista'] as $l):?>
+        <tr>
+            <td>
+            	<?php echo $data['link']['udt'][$l['id']]?>
+            	<?php echo $data['link']['del'][$l['id']]?>
+            </td>
+            <td><?php echo $l['nome']?></td>
+        </tr>
+        <?php endforeach?>
+    </table>
+
+<?php endif;?>

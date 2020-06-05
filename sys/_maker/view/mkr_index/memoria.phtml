@@ -1,0 +1,31 @@
+<?php
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Memória - <?php echo $data['pasta']?></h2>
+<?php echo HelperView::printAlert()?>
+
+<table>
+	<tr>
+		<th width="40%">Path</th>
+		<th width="30%">File Size</th>
+		<th>Percent</th>
+	</tr>
+	<tr>
+		<td colspan="3"><?php echo $data['link'][0]?></td>
+	</tr>
+  	<?php foreach ($data['bytes'] as $path=>$size):?>
+  		<?php if(key_exists($path, $data['link'])):?>
+            <tr>
+		<td><?php echo $data['link'][$path]?></td>
+		<td><?php echo HelperData::getFileSize($size)?></td>
+		<td><?php echo $data['percent'][$path]?></td>
+	</tr>
+  		<?php endif?>
+	<?php endforeach?>
+	<tr>
+		<th>TOTAL</th>
+		<td colspan="2"><b><?php echo HelperData::getFileSize($data['total'])?></b></td>
+
+</table>

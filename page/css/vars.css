@@ -1,0 +1,34 @@
+@font-face {
+    font-family: jenna;
+    src: url(../fonts/JennaSue.ttf);
+}
+@font-face {
+    font-family: enila;
+    src: url(../fonts/Enila.otf);
+	font-weight:normal;
+}
+@font-face {
+	font-family: hobo;
+	src: url(../fonts/hobo-std-medium.otf);
+}
+@font-face{
+	font-family: permaker;
+	src: url(..fonts/PermanentMarker.ttf);
+}
+
+/*
+*	CORES e ESTILOS
+*/
+:root{
+	--sec_norm: #cccccc;
+	--sec_dark: #afafaf;
+	--sec_light: #eeeeee;
+	--text_norm: #000000;
+	--text_alte: #999999;
+	--text_light: #ffffff;
+	--alert_back: #990000;	
+	--alert_text: #ffff00;	
+	--shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.2);
+	--press: 0 3px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.2);
+	--screen_width: 1500px;
+}

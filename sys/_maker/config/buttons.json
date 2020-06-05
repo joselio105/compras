@@ -1,0 +1,58 @@
+{
+    "add": {
+        "icon": "page\/img\/icons\/add.svg",
+        "class": "add"
+    },
+    "close": {
+        "icon": "page\/img\/icons\/close.svg",
+        "class": "close"
+    },
+    "del": {
+        "icon": "page\/img\/icons\/del.svg",
+        "class": "del"
+    },
+    "view": {
+        "icon": "page\/img\/icons\/view.svg",
+        "class": "view"
+    },
+    "info": {
+        "icon": "page\/img\/icons\/info.svg",
+        "class": "info"
+    },
+    "contato": {
+        "icon": "page\/img\/icons\/contato.svg",
+        "class": "contato"
+    },
+    "udt": {
+        "icon": "page\/img\/icons\/udt.svg",
+        "class": "udt"
+    },
+    "code": {
+        "icon": "page\/img\/icons\/code.svg",
+        "class": "code"
+    },
+    "read": {
+        "icon": "page\/img\/icons\/read.svg",
+        "class": "read"
+    },
+    "add_action": {
+        "icon": "page\/img\/icons\/add_action.svg",
+        "class": "add_action"
+    },
+    "add_view": {
+        "icon": "page\/img\/icons\/add_view.svg",
+        "class": "add_view"
+    },
+    "add_list": {
+        "icon": "page\/img\/icons\/add_list.svg",
+        "class": "add_list"
+    },
+    "check": {
+        "icon": "page\/img\/icons\/check.svg",
+        "class": "check"
+    },
+    "history": {
+        "icon": "page\/img\/icons\/history.svg",
+        "class": "history"
+    }
+}

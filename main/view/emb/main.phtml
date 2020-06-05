@@ -1,0 +1,38 @@
+<?php
+/**
+ * @version 03/05/2019 14:21:30
+ * @author jose_helio@gmail.com
+ *
+ */
+
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+<h2>Embalagens</h2>
+<?php echo HelperView::printAlert()?>
+
+<div id="commands">
+	<?php echo $data['link']['add']?>
+	<?php include_once PATH_INCLUDE.'busca.phtml';?>
+</div>
+
+<?php if(key_exists('lista', $data)):?>
+	<table>
+    	<tr>
+            <th></th>
+            <th>Tipo</th>
+            <th>Capacidade</th>
+      	</tr>
+      	<?php foreach ($data['lista'] as $l):?>
+        <tr>
+            <td>
+            	<?php echo $data['link']['udt'][$l['id']]?>
+            	<?php echo $data['link']['del'][$l['id']]?>
+            </td>
+            <td><?php echo $l['tipo_nome']?></td>            
+            <td><?php echo "{$l['capacidade']} {$l['sigla']}"?></td>
+        </tr>
+        <?php endforeach?>
+    </table>
+
+<?php endif;?>

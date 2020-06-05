@@ -1,0 +1,220 @@
+<?php
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+<h2>Título da página</h2>
+<h3>Texto</h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+	vestibulum diam a nisl commodo cursus. Cras non lacus nec nunc gravida
+	convallis. Morbi rhoncus justo felis, sed dapibus leo vehicula congue.
+	Fusce rutrum sem sed vestibulum tempus. Maecenas convallis scelerisque
+	quam pellentesque rhoncus. Aenean posuere, nisi vel dictum suscipit,
+	mauris odio scelerisque ipsum, sit amet imperdiet tortor orci ac
+	libero. Etiam risus diam, tempus eget metus ac, tempor ultricies nisi.
+	Ut auctor sem quis dolor varius, a pretium magna interdum. Integer nec
+	condimentum nunc. Maecenas eu porta sapien. Morbi ac lorem orci.
+	Curabitur quis efficitur leo. Proin fringilla est ac ante elementum,
+	nec vulputate mauris congue.</p>
+<p>
+	Duis rhoncus ipsum eu vehicula mollis. Quisque <a href="">scelerisque
+		at magna eget</a>ut dolor convallis, aliquet metus lobortis, auctor
+	urna. Phasellus sit amet velit non urna varius cursus. Lorem ipsum
+	dolor sit amet, consectetur adipiscing elit. Praesent ac tristique
+	erat. Mauris vitae justo lacus. Aliquam tempus semper mauris, in
+	pulvinar sapien mattis eleifend. Orci varius natoque penatibus et
+	magnis dis parturient montes, nascetur ridiculus mus.
+</p>
+
+<h4>Sub sub titulo</h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+	vestibulum diam a nisl commodo cursus. Cras non lacus nec nunc gravida
+	convallis. Morbi rhoncus justo felis, sed dapibus leo vehicula congue.
+	Fusce rutrum sem sed vestibulum tempus. Maecenas convallis scelerisque
+	quam pellentesque rhoncus. Aenean posuere, nisi vel dictum suscipit,
+	mauris odio scelerisque ipsum, sit amet imperdiet tortor orci ac
+	libero. Etiam risus diam, tempus eget metus ac, tempor ultricies nisi.
+	Ut auctor sem quis dolor varius, a pretium magna interdum. Integer nec
+	condimentum nunc. Maecenas eu porta sapien. Morbi ac lorem orci.
+	Curabitur quis efficitur leo. Proin fringilla est ac ante elementum,
+	nec vulputate mauris congue.</p>
+<p>Duis rhoncus ipsum eu vehicula mollis. Quisque ut dolor convallis,
+	aliquet metus lobortis, auctor urna. Phasellus sit amet velit non urna
+	varius cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Praesent ac tristique erat. Mauris vitae justo lacus. Aliquam tempus
+	semper mauris, in pulvinar sapien mattis eleifend. Orci varius natoque
+	penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+<p>
+	Ut augue magna, <a href="">scelerisque at magna eget</a>, imperdiet
+	consequat nibh. Mauris tristique felis nec ipsum finibus gravida. Sed
+	ac pellentesque quam. Integer et tincidunt dolor, et pharetra massa.
+	Nullam et ultricies orci. Nunc rhoncus, purus vitae feugiat dapibus,
+	turpis augue placerat tellus, id facilisis neque tellus non augue.
+	Pellentesque porta sagittis commodo. Aenean eu bibendum justo, ac
+	gravida ex. Etiam facilisis leo congue turpis hendrerit, ac facilisis
+	arcu sagittis. Nunc sodales tincidunt risus. In ac laoreet tellus,
+	vestibulum porttitor odio. Proin scelerisque auctor gravida.
+</p>
+
+<h3>Tabela 1</h3>
+<div id="table">
+    <table>
+    	<tr>
+    		<th>Colum 1</th>
+    		<th>Colum 2</th>
+    		<th>Colum 3</th>
+    		<th>Colum 4</th>
+    		<th>Colum 5</th>
+    		<th>Colum 6</th>
+    		<th>Colum 7</th>
+    		<th>Colum 8</th>
+    	<tr>
+    	<tr>
+    		<td>Colum 1</td>
+    		<td>Colum 2</td>
+    		<td>Colum 3</td>
+    		<td>Colum 4</td>
+    		<td>Colum 5</td>
+    		<td>Colum 6</td>
+    		<td>Colum 7</td>
+    		<td>Colum 8</td>
+    	<tr>
+    	<tr>
+    		<td>Colum 1</td>
+    		<td>Colum 2</td>
+    		<td>Colum 3</td>
+    		<td>Colum 4</td>
+    		<td>Colum 5</td>
+    		<td>Colum 6</td>
+    		<td>Colum 7</td>
+    		<td>Colum 8</td>
+    	<tr>
+    </table>
+</div>
+
+<h3>SVG</h3>
+<?php foreach(glob(PATH_IMG.'icons/*.svg') as $file)
+	include $file?>
+
+<h3>Tabela 2</h3>
+<table class="notable">
+	<tr>
+		<th>Head 1</th>
+		<th>Head 2</th>
+		<th>Head 3</th>
+		<th>Head 4</th>
+		<th>Head 5</th>
+		<th>Head 6</th>
+		<th>Head 7</th>
+		<th>Head 8</th>
+	<tr>
+	<tr>
+		<td data-th="Head 1" >Colum 1</td>
+		<td data-th="Head 2">Colum 2</td>
+		<td data-th="Head 3">Colum 3</td>
+		<td data-th="Head 4">Colum 4</td>
+		<td data-th="Head 5">Colum 5</td>
+		<td data-th="Head 6">Colum 6</td>
+		<td data-th="Head 7">Colum 7</td>
+		<td data-th="Head 8">Colum 8</td>
+	<tr>
+	<tr>
+		<td data-th="Head 1" >Colum 1</td>
+		<td data-th="Head 2">Colum 2</td>
+		<td data-th="Head 3">Colum 3</td>
+		<td data-th="Head 4">Colum 4</td>
+		<td data-th="Head 5">Colum 5</td>
+		<td data-th="Head 6">Colum 6</td>
+		<td data-th="Head 7">Colum 7</td>
+		<td data-th="Head 8">Colum 8</td>
+	<tr>
+	<tr>
+		<td data-th="Head 1" >Colum 1</td>
+		<td data-th="Head 2">Colum 2</td>
+		<td data-th="Head 3">Colum 3</td>
+		<td data-th="Head 4">Colum 4</td>
+		<td data-th="Head 5">Colum 5</td>
+		<td data-th="Head 6">Colum 6</td>
+		<td data-th="Head 7">Colum 7</td>
+		<td data-th="Head 8">Colum 8</td>
+	<tr>
+</table>
+
+<h3>Formulário</h3>
+<form>
+	<p>
+		<label>Texto</label>
+		<input type="text" placeholder="Texto">
+	</p>
+	
+	<p>
+		<label>Número</label>
+		<input type="number" placeholder="Número">
+	</p>
+	
+	<p>
+		<label>Data</label>
+		<input type="date" placeholder="Data">
+	</p>
+	
+	<p>
+		<label>Arquivo</label>
+		<input type="file" placeholder="Arquivo">
+	</p>
+	
+	<p>
+		<label>Select</label>
+		<select>
+			<option value="">Primeira Opção</option>
+			<option value="">Segunda Opção</option>
+			<option value="">Terceira Opção</option>
+			<option value="">Quarta Opção</option>
+			<option value="">Quinta Opção</option>
+			<option value="">Sexta Opção</option>
+		</select>
+	</p>
+	
+	<p>
+		<label>Label</label>
+		<textarea></textarea>
+	</p>
+	
+	<p>
+		<input type="submit" value="enviar">
+	</p>
+</form>
+
+<h2>Botões</h2>
+<div id="commands">
+	<div class="command">
+		<a href="" class="button">button 1</a>
+	</div>	
+	<div class="command">
+		<a href="" class="button">button 2</a>
+	</div>
+	<div class="command">
+		<a href="" class="button">button 3</a>
+	</div>
+	<div class="command">
+		<a href="" class="button">button 4</a>
+	</div>
+	<div class="command">
+		<a href="" class="button">button 5</a>
+	</div>
+	<div class="command">
+		<a href="" class="button">button 6</a>
+	</div>
+	<div class="command">
+		<a href="" class="button">button 7</a>
+	</div>
+</div>
+
+<h2>Lista</h2>
+<ul>
+    <li class="line_info" title="Atributo 1">Valor 1</li>
+    <li class="line_info" title="Atributo 2">Valor 2</li>
+    <li class="line_info" title="Atributo 3">Valor 3</li>
+    <li class="line_info" title="Atributo 4">Valor 4</li>
+    <li class="line_info" title="Atributo 5">Valor 5</li>
+    <li class="line_info" title="Atributo 6">Valor 6</li>
+    <li class="line_info" title="Atributo 7">Valor 7</li>
+</ul>

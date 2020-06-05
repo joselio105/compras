@@ -1,0 +1,14 @@
+#Eclipse
+/.settings/
+/.builpath
+/.project
+
+#Pastas
+/content/
+/libs/
+
+
+#Arquivos
+/main/config/*.json
+/main/config/menu/*.json
+/sys/config/*.json

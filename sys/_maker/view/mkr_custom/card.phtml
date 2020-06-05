@@ -1,0 +1,16 @@
+<?php 
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Cards</h2>
+<?php echo HelperView::printAlert()?>
+
+<div id="commands">
+	<?php echo $data['add']?>
+</div>
+
+<div id="lista">
+	<?php foreach ($data['cards'] as $card)
+        echo $card;?>
+</div>
