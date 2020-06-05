@@ -28,7 +28,12 @@ final class csv extends Controller_Class{
             $labels = explode(',', $content[0]);
             //var_dump($labels);die;
             array_shift($content);
+            array_pop($content);
             foreach($content as $i=>$line):
+                $line = preg_replace('/(\d+)(\,)(\d+)/', '$1.$3', $line);
+                $line = str_replace('"', '', $line);
+                $line = str_replace('R$ ', '', $line);
+                
                 $itens = explode(',', $line);
                 foreach ($labels as $labelKey=>$labelName)
                     $view['content'][$i][$labelName] = $itens[$labelKey];
