@@ -192,6 +192,15 @@ main li svg{
 	display: none;
 }
 
+main details{
+	width: 100%;
+}
+
+main summary{
+	padding: 5px 0;
+	font-weight: bold;
+}
+
 figure{
 	width: 1200px;
 	height: 400px;
