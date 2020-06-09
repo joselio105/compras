@@ -25,6 +25,7 @@ final class csv extends Controller_Class{
          * Remover primeira(labels) e última(totais) linhas
          * Organizar o csv como um array
          * Listar os elementos base (categoria, embalagem tipo e embalagem unidade)
+         * Salvar lista base
          * Listar os elementos segundo nível (produto e embalagem)
          * Listar os elementos terceiro nível (mercadoria)
          * Tebela final: produto, pdtId, pdt_tp, pdt_tp_id, emb_capacidade, unidade, unsId, emb_tipo, emb_tpId, cmp_quantidade, cmp_data, cmp_preço)
@@ -51,20 +52,76 @@ final class csv extends Controller_Class{
             endforeach;
             
             //Nível Base
-            $tables = array(
-                'pdt_tp' => 'Categoria',
-                'und' => 'Unidade',
-                'emb_tp' => 'Embalagem'
-            );
-            foreach ($tables as $modelName=>$toList):
-                $lista = $this->listContent($view['content'], $toList);
-                foreach ($lista as $i=>$name):
-                    $view['lists'][$toList][$i]['nome'] = $name;
-                    $view['lists'][$toList][$i]['id'] = $this->getId($modelName, "nome = '{$name}'");
+            $fileJson['lvl1'] = PATH_CONTENT."csv/json/{$file}_lvl1.json";
+            if(!file_exists($fileJson['lvl1'])){
+                $tables = array(
+                    'pdt_tp' => 'Categoria',
+                    'und' => 'Unidade',
+                    'emb_tp' => 'Embalagem'
+                );
+                foreach ($tables as $modelName=>$toList):
+                    $lista = $this->listContent($view['content'], $toList);
+                    foreach ($lista as $i=>$name):
+                        $id = $this->getId($modelName, "nome = '{$name}'");
+                        $view['lvl1'][$toList][$id]['nome'] = $name;
+                        $view['lvl1'][$toList][$id]['id'] = $id;
+                    endforeach;
                 endforeach;
-            endforeach;
+                
+                HelperFile::jsonWrite($fileJson['lvl1'], $view['lvl1']);
+                
+                foreach($view['content'] as $i=>$line):
+                    $view['content'][$i][''];
+                endforeach;
+            }else 
+                $view['lvl1'] = HelperFile::jsonRead($fileJson['lvl1']);
             
-            var_dump($view['lists'], $view['database'], $view['content']);die;
+            //Nível 2
+            $fileJson['lvl2'] = PATH_CONTENT."csv/json/{$file}_lvl2.json";
+            if(file_exists($fileJson['lvl2']))
+                $view['lvl2'] = HelperFile::jsonRead($fileJson['lvl2']);
+            else{
+                $tables = array(
+                    'pdt' => array(
+                        'nome'=>'Item',
+                        'tipo'=>'Categoria'
+                    ),
+                    'emb' => array(
+                        'capacidade'=>'Quantidade',
+                        'unidade'=>'Unidade',
+                        'tipo'=>'Embalagem'
+                    )
+                );
+                $view['lvl2'] = array(
+                    'Produto'=>array(
+                        array(
+                            'id'=>NULL,
+                            'nome'=>NULL,
+                            'tipo'=>NULL
+                        )
+                    ),
+                    'Embalagem'=>array(
+                        array(
+                            'id'=>NULL,
+                            'capacidade'=>NULL,
+                            'unidade'=>NULL,
+                            'tipo'=>NULL
+                        )
+                    )
+                );
+                /*
+                 * Embalagem (emb)
+                 * capacidade=>csv.Quantidade
+                 * unidade=>lvl1.Unidade.id
+                 * tipo=>lvl1.Embalagem.id
+                 * 
+                 * Produto (pdt)
+                 * nome=>csv.Item
+                 * tipo=>lvl1.Categoria.id
+                 */
+                
+                var_dump($view['lvl2'], $view['content']);die;
+            }
         }else 
             HelperView::setAlert("É necessário definir o arquivo a ser analizado!");
         
