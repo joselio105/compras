@@ -7,9 +7,10 @@
 
 final class Model_Pdt extends Model_Class{
     
-    public function __construct(){
+    public function __construct($join=FALSE){
         parent::__construct();
-        $this->setJoin('lcp_pdt_tp', 'tbl.tipo=lcp_pdt_tp.id', array('nome'=>'tipo_nome'));
+        if($join)
+            $this->setJoin('lcp_pdt_tp', 'tbl.tipo=lcp_pdt_tp.id', array('nome'=>'tipo_nome'));
     }
     
     /**

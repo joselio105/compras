@@ -7,11 +7,13 @@
 
 final class Model_Emb extends Model_Class{
     
-    public function __construct(){
+    public function __construct($join=FALSE){
         parent::__construct();
-        $this->setJoin('lcp_und', 'tbl.unidade=lcp_und.id', array('nome'=>'unidade_nome', 'sigla'));
-        $this->setJoin('lcp_emb_tp', 'tbl.tipo=lcp_emb_tp.id', array('nome'=>'tipo_nome'));
-        $this->concat(array('lcp_emb_tp.nome', 'capacidade', 'sigla'), 'nome', ' ');
+        if($join){
+            $this->setJoin('lcp_und', 'tbl.unidade=lcp_und.id', array('nome'=>'unidade_nome', 'sigla'));
+            $this->setJoin('lcp_emb_tp', 'tbl.tipo=lcp_emb_tp.id', array('nome'=>'tipo_nome'));
+            $this->concat(array('lcp_emb_tp.nome', 'capacidade', 'sigla'), 'nome', ' ');
+        }
     }
     
     /**

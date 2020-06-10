@@ -6,6 +6,19 @@
  */
 final class csv extends Controller_Class{
     
+    private $models;
+    
+    public function __construct(){
+        parent::__construct();
+        $this->models = array(
+            'pdt_tp' => new Model_Pdt_Tipo(),
+            'und' => new Model_Und(),
+            'emb_tp'=> new Model_Emb_Tipo(),
+            'emb'=> new Model_Emb(),
+            'pdt'=> new Model_Pdt()
+        );
+    }
+    
     public function main(){
         $view = array();
         
@@ -53,6 +66,7 @@ final class csv extends Controller_Class{
             
             //Nível Base
             $fileJson['lvl1'] = PATH_CONTENT."csv/json/{$file}_lvl1.json";
+            $fileJson['dataStructure'] = PATH_CONTENT."csv/json/{$file}_ds.json";
             if(!file_exists($fileJson['lvl1'])){
                 $tables = array(
                     'pdt_tp' => 'Categoria',
@@ -68,59 +82,56 @@ final class csv extends Controller_Class{
                     endforeach;
                 endforeach;
                 
+                //Estrutura de Dados
+                foreach ($labels as $toList):
+                    $modelName = array_search($toList, $tables);
+                    //var_dump($modelName, $toList, $tables);die;
+                    foreach($view['content'] as $i=>$line):                        
+                        $view['ds'][$i][$toList] = $line[$toList];
+                        if($modelName)
+                            $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
+                    endforeach;
+                endforeach;
+                
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
                 HelperFile::jsonWrite($fileJson['lvl1'], $view['lvl1']);
                 
-                foreach($view['content'] as $i=>$line):
-                    $view['content'][$i][''];
-                endforeach;
             }else 
                 $view['lvl1'] = HelperFile::jsonRead($fileJson['lvl1']);
             
             //Nível 2
             $fileJson['lvl2'] = PATH_CONTENT."csv/json/{$file}_lvl2.json";
+            $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
             if(file_exists($fileJson['lvl2']))
                 $view['lvl2'] = HelperFile::jsonRead($fileJson['lvl2']);
             else{
-                $tables = array(
-                    'pdt' => array(
-                        'nome'=>'Item',
-                        'tipo'=>'Categoria'
-                    ),
-                    'emb' => array(
-                        'capacidade'=>'Quantidade',
-                        'unidade'=>'Unidade',
-                        'tipo'=>'Embalagem'
-                    )
-                );
-                $view['lvl2'] = array(
-                    'Produto'=>array(
-                        array(
-                            'id'=>NULL,
-                            'nome'=>NULL,
-                            'tipo'=>NULL
-                        )
-                    ),
-                    'Embalagem'=>array(
-                        array(
-                            'id'=>NULL,
-                            'capacidade'=>NULL,
-                            'unidade'=>NULL,
-                            'tipo'=>NULL
-                        )
-                    )
-                );
                 /*
                  * Embalagem (emb)
-                 * capacidade=>csv.Quantidade
-                 * unidade=>lvl1.Unidade.id
-                 * tipo=>lvl1.Embalagem.id
+                 * capacidade=>ds.Quantidade
+                 * unidade=>ds.Unidade_id
+                 * tipo=>ds.Embalagem_id
                  * 
                  * Produto (pdt)
-                 * nome=>csv.Item
-                 * tipo=>lvl1.Categoria.id
+                 * nome=>ds.Item
+                 * tipo=>ds.Categoria_id
                  */
                 
-                var_dump($view['lvl2'], $view['content']);die;
+                foreach ($view['ds'] as $i=>$line):
+                    foreach (array(
+                        'pdt'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
+                        'emb'=>"capacidade='{$line['Quantidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
+                    ) as $modelName=>$where):
+                        $id = $this->getId($modelName, $where);
+                        if(!is_null($id))
+                            $view['ds'][$i][$modelName.'_id'] = $id;
+                        else{
+                            $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
+                        }
+                    endforeach;
+                endforeach;
+                
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                var_dump($view['ds']);die;
             }
         }else 
             HelperView::setAlert("É necessário definir o arquivo a ser analizado!");
@@ -144,32 +155,34 @@ final class csv extends Controller_Class{
         return $response;
     }
     
-    private function listOnDb($modelName){
-        $response = array();
-        
-        $models = array(
-            'pdt_tp' => new Model_Pdt_Tipo(),
-            'unidade' => new Model_Und(),
-            'emb_tp'=> new Model_Emb_Tipo()
-        );
-        
-        $response = $models[$modelName]->read();
-        
-        return $response;
-    }
-    
+    /**
+     * Recupera o id de um elemento no banco de dados
+     * @param string $modelName
+     * @param string $where
+     * @return NULL|integer
+     */
     private function getId($modelName, $where){
         $response = array();
         
-        $models = array(
-            'pdt_tp' => new Model_Pdt_Tipo(),
-            'und' => new Model_Und(),
-            'emb_tp'=> new Model_Emb_Tipo()
-        );
-        
-        $response = $models[$modelName]->readOne($where);
+        $response = $this->models[$modelName]->readOne($where);
         
         return (!is_null($response) ? $response['id'] : NULL);
+    }
+    /**
+     * Registra o item no banco de dados
+     * @param string $modelName
+     * @param string $values
+     * @return boolean|number
+     */
+    private function addLineOnBd($modelName, $values){
+        foreach (explode(' AND ', $values) as $value):
+            $brk = explode('=', $value);
+            $brk[1] = str_replace("'", "", $brk[1]);
+            $newValues[$brk[0]] = $brk[1];
+        endforeach;
+        $response = $this->models[$modelName]->create($newValues);
+        
+        return $response;
     }
     
     protected function setModel(){}
