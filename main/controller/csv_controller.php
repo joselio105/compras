@@ -15,7 +15,9 @@ final class csv extends Controller_Class{
             'und' => new Model_Und(),
             'emb_tp'=> new Model_Emb_Tipo(),
             'emb'=> new Model_Emb(),
-            'pdt'=> new Model_Pdt()
+            'pdt'=> new Model_Pdt(),
+            'mcd'=> new Model_Mcd(),
+            'hst'=> new Model_Hst()
         );
     }
     
@@ -64,75 +66,72 @@ final class csv extends Controller_Class{
                     $view['content'][$i][$labelName] = $itens[$labelKey];
             endforeach;
             
-            //Nível Base
-            $fileJson['lvl1'] = PATH_CONTENT."csv/json/{$file}_lvl1.json";
-            $fileJson['dataStructure'] = PATH_CONTENT."csv/json/{$file}_ds.json";
-            if(!file_exists($fileJson['lvl1'])){
-                $tables = array(
-                    'pdt_tp' => 'Categoria',
-                    'und' => 'Unidade',
-                    'emb_tp' => 'Embalagem'
-                );
-                foreach ($tables as $modelName=>$toList):
-                    $lista = $this->listContent($view['content'], $toList);
-                    foreach ($lista as $i=>$name):
-                        $id = $this->getId($modelName, "nome = '{$name}'");
-                        $view['lvl1'][$toList][$id]['nome'] = $name;
-                        $view['lvl1'][$toList][$id]['id'] = $id;
-                    endforeach;
-                endforeach;
-                
-                //Estrutura de Dados
-                foreach ($labels as $toList):
-                    $modelName = array_search($toList, $tables);
-                    //var_dump($modelName, $toList, $tables);die;
-                    foreach($view['content'] as $i=>$line):                        
-                        $view['ds'][$i][$toList] = $line[$toList];
-                        if($modelName)
-                            $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
-                    endforeach;
-                endforeach;
-                
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
-                HelperFile::jsonWrite($fileJson['lvl1'], $view['lvl1']);
-                
-            }else 
-                $view['lvl1'] = HelperFile::jsonRead($fileJson['lvl1']);
+            //Nível Base: unidade, embalagem_tipo e produto_tipo
+            $fileJson['dataStructure'] = PATH_CONTENT."csv/{$file}.json";
             
-            //Nível 2
-            $fileJson['lvl2'] = PATH_CONTENT."csv/json/{$file}_lvl2.json";
-            $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
-            if(file_exists($fileJson['lvl2']))
-                $view['lvl2'] = HelperFile::jsonRead($fileJson['lvl2']);
-            else{
-                /*
-                 * Embalagem (emb)
-                 * capacidade=>ds.Quantidade
-                 * unidade=>ds.Unidade_id
-                 * tipo=>ds.Embalagem_id
-                 * 
-                 * Produto (pdt)
-                 * nome=>ds.Item
-                 * tipo=>ds.Categoria_id
-                 */
-                
-                foreach ($view['ds'] as $i=>$line):
-                    foreach (array(
-                        'pdt'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
-                        'emb'=>"capacidade='{$line['Quantidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
-                    ) as $modelName=>$where):
-                        $id = $this->getId($modelName, $where);
-                        if(!is_null($id))
-                            $view['ds'][$i][$modelName.'_id'] = $id;
-                        else{
-                            $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
-                        }
-                    endforeach;
+            $tables = array(
+                'pdt_tp' => 'Categoria',
+                'und' => 'Unidade',
+                'emb_tp' => 'Embalagem'
+            );
+            
+            foreach ($labels as $toList):
+                $modelName = array_search($toList, $tables);
+                foreach($view['content'] as $i=>$line):                        
+                    $view['ds'][$i][$toList] = $line[$toList];
+                    if($modelName)
+                        $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
                 endforeach;
+            endforeach;
                 
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
-                var_dump($view['ds']);die;
-            }
+            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+            
+            //Nível 2: produto e embalagem
+            foreach ($view['ds'] as $i=>$line):
+                foreach (array(
+                    'pdt'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
+                    'emb'=>"capacidade='{$line['Capacidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
+                    ) as $modelName=>$where):
+                    $id = $this->getId($modelName, $where);
+                    if(!is_null($id))
+                        $view['ds'][$i][$modelName.'_id'] = $id;
+                    else{
+                        $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
+                    }
+                endforeach;
+            endforeach;
+                
+            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+            
+            //Nível 3: mercadoria
+            foreach ($view['ds'] as $i=>$line):
+                $modelName = 'mcd';
+                $where = "produto='{$line['pdt_id']}' AND embalagem='{$line['emb_id']}'";
+                $id = $this->getId($modelName, $where);
+                if(!is_null($id))
+                    $view['ds'][$i][$modelName.'_id'] = $id;
+                else
+                    $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);                
+            endforeach;
+                
+            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+            
+            //Nível 4: histórico
+            $data = date('Y-m-d', strtotime($file));
+            //var_dump($data);die;
+            foreach ($view['ds'] as $i=>$line):
+                $modelName = 'hst';
+                $where = "mercadoria='{$line['mcd_id']}' AND quantidade='{$line['Quantidade']}' AND preco='{$line['ValUnit']}' AND data='$data'";
+                $id = $this->getId($modelName, $where);
+                if(!is_null($id))
+                    $view['ds'][$i][$modelName.'_id'] = $id;
+                else
+                    $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
+            endforeach;
+                    
+            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+            var_dump($view['ds']);die;
+            
         }else 
             HelperView::setAlert("É necessário definir o arquivo a ser analizado!");
         
