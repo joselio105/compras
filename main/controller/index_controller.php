@@ -55,7 +55,7 @@ final class index extends Controller_Class{
         $view = array();
         
         $ctrl_alias = 'Lista de Compras';
-        foreach ($this->_model->read("quantidade>0", 'nome') as $l):
+        foreach ($this->_model->read("data<>NULL", 'nome') as $l):
             $view['lista'][$l['mercadoria']] = $l;
         
             foreach (array('check', 'view') as $act):            

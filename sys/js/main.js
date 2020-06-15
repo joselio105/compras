@@ -1,3 +1,12 @@
+//ESCONDER LINHA
+$(document).ready(function esconder() {
+	$(".to_hide").click(function(){
+		var item = $(this)
+		item.hide()
+		$("#comprados").append('<tr>'+item.html()+'</tr>')
+	})
+})
+
 //AUTO COMPLETAR
 $(document).ready(function() {
 	//$("#auto_value").attr("size", $("#auto_value option").length)

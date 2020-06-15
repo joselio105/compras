@@ -15,23 +15,27 @@ $data = HelperView::getViewData();
 	<?php include_once PATH_INCLUDE.'busca.phtml';?>
 </div>
 
+<div id="table">
 <?php if(key_exists('lista', $data)):?>
 	<table>
     	<tr>
             <th></th>
             <th>Produto</th>
+            <th>Última Quantidade</th>
             <th>Último Preço</th>
+            <th>Última Compra</th>
+            <th></th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr>
-            <td>
-            	<?php echo $data['link']['check'][$l['id']]?>
-            	<?php echo $data['link']['view'][$l['id']]?>
-            </td>            
+            <td><?php echo $data['link']['check'][$l['id']]?></td>            
             <td><?php echo $l['nome']?></td>
+            <td><?php echo $l['lastQtd']?></td>
             <td><?php echo HelperData::printLikeMoney($l['lastPreco'])?></td>
+            <td><?php echo NULL?></td>
+            <td><?php echo $data['link']['view'][$l['id']]?></td>
         </tr>
         <?php endforeach?>
     </table>
-
 <?php endif;?>
+</div>
