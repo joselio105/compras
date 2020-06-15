@@ -16,23 +16,23 @@ $data = HelperView::getViewData();
 	<?php include_once PATH_INCLUDE.'busca.phtml';?>
 </div>
 
+<div id="table">
 <?php if(key_exists('lista', $data)):?>
 	<table>
     	<tr>
             <th></th>
             <th>Tipo</th>
             <th>Capacidade</th>
+            <th></th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr>
-            <td>
-            	<?php echo $data['link']['udt'][$l['id']]?>
-            	<?php echo $data['link']['del'][$l['id']]?>
-            </td>
+            <td><?php echo $data['link']['udt'][$l['id']]?></td>
             <td><?php echo $l['tipo_nome']?></td>            
             <td><?php echo "{$l['capacidade']} {$l['sigla']}"?></td>
+            <td><?php echo $data['link']['del'][$l['id']]?></td>
         </tr>
         <?php endforeach?>
     </table>
-
-<?php endif;?>
+<?php endif?>
+</div>
