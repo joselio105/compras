@@ -20,8 +20,8 @@ final class Form_Mcd extends Form_Class{
      * @see Form_Class::setFormFields()
      */
     protected function setFormFields(){
-        $produtos = new Model_Pdt();
-        $embalagens = new Model_Emb();
+        $produtos = new Model_Pdt(TRUE);
+        $embalagens = new Model_Emb(TRUE);
         
         $this->fields = array(
             new Select_Field('produto', $produtos->readList('nome', NULL, 'Escolha'), 'Produto'),

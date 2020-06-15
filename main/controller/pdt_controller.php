@@ -32,7 +32,7 @@ final class pdt extends Controller_Class{
      * @see Controller_Class::setModel()
      */
     protected function setModel(){
-        $this->_model = new Model_Pdt();
+        $this->_model = new Model_Pdt(TRUE);
     }
 
     

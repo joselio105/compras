@@ -18,24 +18,31 @@ $data = HelperView::getViewData();
 	<?php include_once PATH_INCLUDE.'busca.phtml';?>
 </div>
 
+<p>Total Estimado: <b><?php echo HelperData::printLikeMoney($data['total'])?></b></p>
+
+<div id="table">
 <?php if(key_exists('lista', $data)):?>
 	<table>
     	<tr>
             <th></th>
+            <th></th>
             <th>Produto</th>
-            <th>Último Preço</th>
+            <th>Quantidade</th>
+            <th>Preço Unit.</th>
+            <th>Preço Total</th>
+            <th></th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr>
-            <td>
-            	<?php echo $data['link']['check'][$l['id']]?>
-            	<?php echo $data['link']['del'][$l['id']]?>
-            </td>            
+            <td><?php echo $data['link']['check'][$l['id']]?></td>
+            <td><?php echo $data['link']['udt'][$l['id']]?></td>          
             <td><?php echo $l['nome']?></td>
-            <td><?php echo HelperData::printLikeMoney($l['lastPreco'])?></td>
+            <td><?php echo $l['quantidade']?></td>
+            <td><?php echo HelperData::printLikeMoney($l['preco'])?></td>
+            <td><?php echo HelperData::printLikeMoney($l['preco']*$l['quantidade'])?></td>    
+            <td><?php echo $data['link']['del'][$l['id']]?></td>  
         </tr>
         <?php endforeach?>
     </table>
-
-<?php endif;?>
-
+<?php endif?>
+</div>

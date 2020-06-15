@@ -7,23 +7,24 @@
 $data = HelperView::getViewData();
 ?>
 
-<h2>Registrar Compras</h2>
+<h2>Compras Importadas</h2>
 <?php echo HelperView::printAlert()?>
-
-<?php foreach($data['lvl1'] as $table=>$read):?>
-<details>
-	<summary><?php echo $table?></summary>
-	<table>
-		<tr>
-			<th>id</th>
-			<th>nome</th>
-		</tr>
-		<?php foreach ($read as $line):?>
-			<tr>
-				<td><?php echo $line['id']?></td>
-				<td><?php echo $line['nome']?></td>
-			</tr>
-		<?php endforeach?>
+<div id="table">
+    <table>
+    	<tr>
+    		<th></th>
+    		<?php foreach($data['columns'] as $column):?>
+        		<th><?php echo $column ?></th>
+        	<?php endforeach?>
+    	</tr>
+    		<?php foreach ($data['ds'] as $i=>$line):?>
+    			<tr>
+    				<td><?php echo $i?></td>
+    				<?php foreach($data['columns'] as $column):?>
+    					<td><?php echo $line[$column]?></td>
+    				<?php endforeach?>
+    			</tr>
+    		<?php endforeach?>
 	</table>
-</details>
-<?php endforeach?>
+</div>
+<p><?php echo $data['nextLevel']?></p>
