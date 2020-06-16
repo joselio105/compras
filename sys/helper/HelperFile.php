@@ -139,7 +139,7 @@ final class HelperFile{
             $log[$i] = "Copiando {$c} para {$destino}{$fileName[$i]}";
             
             if(!copy($c, $destino.$fileName[$i]))
-                \HelperView::setAlert("ERRO AO COPIAR ARQUIVO: {$origem}");
+                HelperView::setAlert("ERRO AO COPIAR ARQUIVO: {$origem}");
             else 
                 $log[$i].= " - OK";
         endforeach;
@@ -326,7 +326,7 @@ final class HelperFile{
      * @return string[][]
      */
     public static function getFilesInfo($path){
-        $dirIt = new \RecursiveTreeIterator(new \RecursiveDirectoryIterator($path));
+        $dirIt = new RecursiveTreeIterator(new \RecursiveDirectoryIterator($path));
         
         
         $k = 0;
@@ -484,7 +484,10 @@ final class HelperFile{
             self::create_path(pathinfo($jsonFile, PATHINFO_DIRNAME).'/');
                 
         //Junta os registros atuais com os anteriores
-        $info = $infoOld + $info;
+        if(empty($info))
+            $info = $infoOld;
+        else
+            array_push($info, $infoOld);
                 
         //Transforma o array de registros em jSon
         $jsonData = json_encode($info, JSON_PRETTY_PRINT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -508,7 +511,7 @@ final class HelperFile{
         }
         $res = json_decode($string, TRUE);
         
-        return $res;
+        return (!is_null($res) ? $res : array());
     }
     
     /**

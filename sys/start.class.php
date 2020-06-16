@@ -132,6 +132,7 @@ class Start{
         define('FILE_TYPE_JPG', 'image/jpeg');
         define('FILE_TYPE_PNG', 'image/png');
         define('FILE_TYPE_SVG', 'image/svg+xml');
+        define('FILE_TYPE_CSV', 'application/octet-stream');
         
         define('FILE_SIZE_BYTE', 1);
         define('FILE_SIZE_KILO', 1024);
