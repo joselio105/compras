@@ -24,11 +24,21 @@ final class csv extends Controller_Class{
     public function main(){
         $view = array();
         
-        $lista = glob(PATH_CONTENT.'csv/*.csv');
+        $view['form'] = $this->_form;
         
-        foreach ($lista as $l):
-            $view['lista'][$l] = basename($l, '.csv');
-        endforeach;
+        if($this->_form->isSubmitedForm()){
+            $file = $this->_form->readFieldForm('file');
+            
+            if($file['type']==FILE_TYPE_CSV){
+                $filename = preg_replace('/[a-zA-Z]*\.*\s*/', '', $file['name']);
+                $filename = date('Ymd', strtotime(substr($filename, 1)));
+                $param['file'] = $filename;
+                $filename = PATH_CONTENT."csv/{$filename}.csv";
+                move_uploaded_file($file['tmp_name'], $filename);
+                HelperNavigation::redirect('csv', 'read', $param);
+            }else 
+                HelperView::setAlert('O arquivo deve ser no formato CSV');            
+        }
         
         HelperView::setViewData($view);
     }
@@ -205,7 +215,9 @@ final class csv extends Controller_Class{
     
     protected function setModel(){}
 
-    protected function setForm(){}
+    protected function setForm(){
+        $this->_form = new Form_File();
+    }
 
 
 }

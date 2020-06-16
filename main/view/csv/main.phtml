@@ -10,8 +10,4 @@ $data = HelperView::getViewData();
 <h2>Importar Compras</h2>
 <?php echo HelperView::printAlert()?>
 
-<ul>
-	<?php foreach($data['lista'] as $filename):?>
-		<li><a href="<?php echo URI."csv/read/file/{$filename}"?>"><?php echo date('d/m/Y', strtotime($filename))?></a></li>
-	<?php endforeach?>
-</ul>
+<?php echo $data['form']?>
