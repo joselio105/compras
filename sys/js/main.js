@@ -1,3 +1,15 @@
+//MARCA COMO COMPRADO
+$(document).ready(function clicktoHide() {
+	$("#comprados").css("display", "none")
+	$(".to_hide").click(function hide(){
+		var line = $(this)
+		line.hide()
+		$("#comprados").css({"display": "block", "width": "100%"})
+		$("#comprados table").css("width", "100%")
+		$("#comprados table").append("<tr>"+line.html()+"</tr>")
+	})
+})
+
 //AUTO COMPLETAR
 $(document).ready(function() {
 	//$("#auto_value").attr("size", $("#auto_value option").length)

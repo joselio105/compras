@@ -36,7 +36,7 @@ final class mcd extends Controller_Class{
      * @see Controller_Class::setModel()
      */
     protected function setModel(){
-        $this->_model = new Model_Mcd();
+        $this->_model = new Model_Mcd(TRUE);
     }
 
     

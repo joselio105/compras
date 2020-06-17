@@ -31,7 +31,9 @@ final class csv extends Controller_Class{
             
             if($file['type']==FILE_TYPE_CSV){
                 $filename = preg_replace('/[a-zA-Z]*\.*\s*/', '', $file['name']);
-                $filename = date('Ymd', strtotime(substr($filename, 1)));
+                $brk = explode('-', substr($filename, 1));
+                $filename = "20{$brk['2']}-{$brk['1']}-{$brk['0']}";
+                
                 $param['file'] = $filename;
                 $filename = PATH_CONTENT."csv/{$filename}.csv";
                 move_uploaded_file($file['tmp_name'], $filename);
@@ -43,104 +45,123 @@ final class csv extends Controller_Class{
         HelperView::setViewData($view);
     }
     
-    public function read(){
-        /*
-         * Ler o arquivo csv
-         * Identificar Labels (primeira linha)
-         * Remover primeira(labels) e última(totais) linhas
-         * Organizar o csv como um array
-         * Listar os elementos base (categoria, embalagem tipo e embalagem unidade)
-         * Salvar lista base
-         * Listar os elementos segundo nível (produto e embalagem)
-         * Listar os elementos terceiro nível (mercadoria)
-         * Tebela final: produto, pdtId, pdt_tp, pdt_tp_id, emb_capacidade, unidade, unsId, emb_tipo, emb_tpId, cmp_quantidade, cmp_data, cmp_preço)
-         */
-        
+    public function read(){        
         $view = array();
         
         $file = HelperNavigation::getParam('file');
+        $level = HelperNavigation::getParam('level');
+        
         if(!is_null($file)){
+            $fileJson['dataStructure'] = PATH_CONTENT."csv/{$file}.json";
             $filename = PATH_CONTENT."csv/{$file}.csv";
             $content = file($filename);
             $labels = explode(',', $content[0]);
-            
+                
             array_shift($content);
             array_pop($content);
-            foreach($content as $i=>$line):
-                $line = preg_replace('/(\d+)(\,)(\d+)/', '$1.$3', $line);
-                $line = str_replace('"', '', $line);
-                $line = str_replace('R$ ', '', $line);
+            
+            if(is_null($level)){
                 
-                $itens = explode(',', $line);
-                foreach ($labels as $labelKey=>$labelName)
-                    $view['content'][$i][$labelName] = $itens[$labelKey];
-            endforeach;
-            
-            //Nível Base: unidade, embalagem_tipo e produto_tipo
-            $fileJson['dataStructure'] = PATH_CONTENT."csv/{$file}.json";
-            
-            $tables = array(
-                'pdt_tp' => 'Categoria',
-                'und' => 'Unidade',
-                'emb_tp' => 'Embalagem'
-            );
-            
-            foreach ($labels as $toList):
-                $modelName = array_search($toList, $tables);
-                foreach($view['content'] as $i=>$line):                        
-                    $view['ds'][$i][$toList] = $line[$toList];
-                    if($modelName)
-                        $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
+                foreach($content as $i=>$line):
+                    $line = preg_replace('/(\d+)(\,)(\d+)/', '$1.$3', $line);
+                    $line = str_replace('"', '', $line);
+                    $line = str_replace('R$ ', '', $line);
+                    
+                    $itens = explode(',', $line);
+                    foreach ($labels as $labelKey=>$labelName)
+                        $view['ds'][$i][$labelName] = $itens[$labelKey];
                 endforeach;
-            endforeach;
                 
-            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
+            }
             
-            //Nível 2: produto e embalagem
-            foreach ($view['ds'] as $i=>$line):
-                foreach (array(
-                    'pdt'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
-                    'emb'=>"capacidade='{$line['Capacidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
-                    ) as $modelName=>$where):
+            if($level==1){
+                $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
+                
+                $tables = array(
+                    'pdt_tp' => 'Categoria',
+                    'und' => 'Unidade',
+                    'emb_tp' => 'Embalagem'
+                );
+                
+                foreach ($labels as $toList):
+                    $modelName = array_search($toList, $tables);
+                    foreach($view['ds'] as $i=>$line):                        
+                        $view['ds'][$i][$toList] = $line[$toList];
+                        if($modelName)
+                            $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
+                    endforeach;
+                endforeach;
+                    
+                unlink($fileJson['dataStructure']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
+            }
+            
+            if($level==2){
+                $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
+                
+                foreach ($view['ds'] as $i=>$line):
+                    foreach (array(
+                        'pdt'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
+                        'emb'=>"capacidade='{$line['Capacidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
+                        ) as $modelName=>$where):
+                        $id = $this->getId($modelName, $where);
+                        if(!is_null($id))
+                            $view['ds'][$i][$modelName.'_id'] = $id;
+                        else{
+                            $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
+                        }
+                    endforeach;
+                endforeach;
+                    
+                unlink($fileJson['dataStructure']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
+            }
+            
+            if($level==3){
+                $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
+                
+                foreach ($view['ds'] as $i=>$line):
+                    $modelName = 'mcd';
+                    $where = "produto='{$line['pdt_id']}' AND embalagem='{$line['emb_id']}'";
                     $id = $this->getId($modelName, $where);
                     if(!is_null($id))
                         $view['ds'][$i][$modelName.'_id'] = $id;
-                    else{
-                        $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
-                    }
+                    else
+                        $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);                
                 endforeach;
-            endforeach;
-                
-            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
-            
-            //Nível 3: mercadoria
-            foreach ($view['ds'] as $i=>$line):
-                $modelName = 'mcd';
-                $where = "produto='{$line['pdt_id']}' AND embalagem='{$line['emb_id']}'";
-                $id = $this->getId($modelName, $where);
-                if(!is_null($id))
-                    $view['ds'][$i][$modelName.'_id'] = $id;
-                else
-                    $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);                
-            endforeach;
-                
-            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
-            
-            //Nível 4: histórico
-            $data = date('Y-m-d', strtotime($file));
-            //var_dump($data);die;
-            foreach ($view['ds'] as $i=>$line):
-                $modelName = 'hst';
-                $where = "mercadoria='{$line['mcd_id']}' AND quantidade='{$line['Quantidade']}' AND preco='{$line['ValUnit']}' AND data='$data'";
-                $id = $this->getId($modelName, $where);
-                if(!is_null($id))
-                    $view['ds'][$i][$modelName.'_id'] = $id;
-                else
-                    $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
-            endforeach;
                     
-            HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
-            var_dump($view['ds']);die;
+                unlink($fileJson['dataStructure']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
+            }
+            
+            
+            if($level==4){
+                $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
+                $data = date('Y-m-d', strtotime($file));
+                
+                foreach ($view['ds'] as $i=>$line):
+                    $modelName = 'hst';
+                    $where = "mercadoria='{$line['mcd_id']}' AND quantidade='{$line['Quantidade']}' AND preco='{$line['ValUnit']}' AND data='$data'";
+                    $id = $this->getId($modelName, $where);
+                    if(!is_null($id))
+                        $view['ds'][$i][$modelName.'_id'] = $id;
+                    else
+                        $view['ds'][$i][$modelName.'_id'] = $this->addLineOnBd($modelName, $where);
+                endforeach;
+                        
+                unlink($fileJson['dataStructure']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
+            }
+            $view['columns'] = array_keys($view['ds'][0]);
+            $view['nextLevel'] =  new Helper_Link('csv', 'Importar lista', 'read', array('file'=>$file,'level'=>$level+1));
+            $view['nextLevel']->setTexto("Próxima Etapa");
+            $view['nextLevel']->setIsBotao();
+            $view['nextLevel']->setTitle("Segue para a próxima etapa da importação");
+            $view['nextLevel']->setPermitions(HelperAuth::getPermitionByType(PERMITION_LEVEL_PUBLIC));
+            
+            if($level>=4)
+                $view['nextLevel'] = NULL;
             
         }else 
             HelperView::setAlert("É necessário definir o arquivo a ser analizado!");
@@ -154,7 +175,7 @@ final class csv extends Controller_Class{
      * @param string $toList
      * @return string[]
      */
-    private function listContent(array $content, $toList){
+    private function xlistContent(array $content, $toList){
         $response = array();
         
         foreach ($content as $line)

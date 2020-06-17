@@ -100,14 +100,17 @@ class Read_Class extends Sql_Class{
         }
         if(!is_null($this->model->getConcat())){
             $key = count($fields);
-            foreach ($this->model->getConcat() as $concat)
+            foreach ($this->model->getConcat() as $concat):
                 $fields[$key] = $concat;
+                $key++;
+            endforeach;
         }
-        //var_dump($this->model->getSubSql());die;
         if(!is_null($this->model->getSubSql())){
             $key = count($fields);
-            foreach ($this->model->getSubSql() as $subSql)
+            foreach ($this->model->getSubSql() as $subSql):
                 $fields[$key] = $subSql;
+                $key++;
+            endforeach;
         }
         
         return implode(', ', $fields);

@@ -326,7 +326,7 @@ final class HelperFile{
      * @return string[][]
      */
     public static function getFilesInfo($path){
-        $dirIt = new RecursiveTreeIterator(new \RecursiveDirectoryIterator($path));
+        $dirIt = new RecursiveTreeIterator(new RecursiveDirectoryIterator($path));
         
         
         $k = 0;
@@ -369,7 +369,7 @@ final class HelperFile{
      * @return string[]
      */
     public static function getDirs($path, array $prohibed=null){
-        $dirIt = new \RecursiveTreeIterator(new \RecursiveDirectoryIterator($path));        
+        $dirIt = new RecursiveTreeIterator(new RecursiveDirectoryIterator($path));        
         
         $k = 0;
         $files = array();
@@ -475,7 +475,7 @@ final class HelperFile{
      * @param array $info
      * @return number
      */
-    public static function jsonWrite($jsonFile, array $info){
+    public static function jsonWrite($jsonFile, array $info, $overwrite=FALSE){
         $infoOld = array();
         
         if(file_exists($jsonFile))
@@ -484,13 +484,14 @@ final class HelperFile{
             self::create_path(pathinfo($jsonFile, PATHINFO_DIRNAME).'/');
                 
         //Junta os registros atuais com os anteriores
-        if(empty($info))
-            $info = $infoOld;
-        else
+        if(!empty($infoOld) AND !$overwrite)
             array_push($info, $infoOld);
                 
         //Transforma o array de registros em jSon
-        $jsonData = json_encode($info, JSON_PRETTY_PRINT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
+        if(phpversion()<'5.3')
+            $jsonData = json_encode($info);
+        else
+            $jsonData = json_encode($info, JSON_PRETTY_PRINT | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
                       
         return file_put_contents($jsonFile, $jsonData);                
                 

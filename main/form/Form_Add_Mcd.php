@@ -20,7 +20,7 @@ final class Form_Add_Mcd extends Form_Class{
      * @see Form_Class::setFormFields()
      */
     protected function setFormFields(){
-        $model = new Model_Mcd();
+        $model = new Model_Mcd(TRUE);
         
         $this->fields = array(
             new InputAutoComplete_Field('mercadoria', $model->readList('nome'), 'Mercadoria'),
