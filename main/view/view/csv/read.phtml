@@ -1,0 +1,30 @@
+<?php
+/**
+ * @version 08/05/2019 15:45:25
+ * @author jose_helio@gmail.com
+ *
+ */include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Compras Importadas</h2>
+<?php echo HelperView::printAlert()?>
+<div id="table">
+    <table>
+    	<tr>
+    		<th></th>
+    		<?php foreach($data['columns'] as $column):?>
+        		<th><?php echo $column ?></th>
+        	<?php endforeach?>
+    	</tr>
+    		<?php foreach ($data['ds'] as $i=>$line):?>
+    			<tr>
+    				<td><?php echo $i?></td>
+    				<?php foreach($data['columns'] as $column):?>
+    					<td><?php echo $line[$column]?></td>
+    				<?php endforeach?>
+    			</tr>
+    		<?php endforeach?>
+	</table>
+</div>
+<p><?php echo $data['nextLevel']?></p>

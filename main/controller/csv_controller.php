@@ -31,7 +31,9 @@ final class csv extends Controller_Class{
             
             if($file['type']==FILE_TYPE_CSV){
                 $filename = preg_replace('/[a-zA-Z]*\.*\s*/', '', $file['name']);
-                $filename = date('Ymd', strtotime(substr($filename, 1)));
+                $brk = explode('-', substr($filename, 1));
+                $filename = "20{$brk['2']}-{$brk['1']}-{$brk['0']}";
+                
                 $param['file'] = $filename;
                 $filename = PATH_CONTENT."csv/{$filename}.csv";
                 move_uploaded_file($file['tmp_name'], $filename);
@@ -70,7 +72,7 @@ final class csv extends Controller_Class{
                         $view['ds'][$i][$labelName] = $itens[$labelKey];
                 endforeach;
                 
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
             }
             
             if($level==1){
@@ -88,11 +90,12 @@ final class csv extends Controller_Class{
                         $view['ds'][$i][$toList] = $line[$toList];
                         if($modelName)
                             $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
+
                     endforeach;
                 endforeach;
                     
                 unlink($fileJson['dataStructure']);
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
             }
             
             if($level==2){
@@ -113,7 +116,7 @@ final class csv extends Controller_Class{
                 endforeach;
                     
                 unlink($fileJson['dataStructure']);
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
             }
             
             if($level==3){
@@ -122,6 +125,7 @@ final class csv extends Controller_Class{
                 foreach ($view['ds'] as $i=>$line):
                     $modelName = 'mcd';
                     $where = "produto='{$line['pdt_id']}' AND embalagem='{$line['emb_id']}'";
+
                     $id = $this->getId($modelName, $where);
                     if(!is_null($id))
                         $view['ds'][$i][$modelName.'_id'] = $id;
@@ -130,14 +134,14 @@ final class csv extends Controller_Class{
                 endforeach;
                     
                 unlink($fileJson['dataStructure']);
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
             }
             
             
             if($level==4){
                 $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
                 $data = date('Y-m-d', strtotime($file));
-                //var_dump($data);die;
+                
                 foreach ($view['ds'] as $i=>$line):
                     $modelName = 'hst';
                     $where = "mercadoria='{$line['mcd_id']}' AND quantidade='{$line['Quantidade']}' AND preco='{$line['ValUnit']}' AND data='$data'";
@@ -149,7 +153,7 @@ final class csv extends Controller_Class{
                 endforeach;
                         
                 unlink($fileJson['dataStructure']);
-                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds']);
+                HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
             }
             $view['columns'] = array_keys($view['ds'][0]);
             $view['nextLevel'] =  new Helper_Link('csv', 'Importar lista', 'read', array('file'=>$file,'level'=>$level+1));

@@ -1,0 +1,13 @@
+<?php
+/**
+ * @version 02/05/2019 13:45:25
+ * @author jose_helio@gmail.com
+ *
+ */include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+
+<h2>Importar Compras</h2>
+<?php echo HelperView::printAlert()?>
+
+<?php echo $data['form']?>

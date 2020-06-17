@@ -1,9 +1,12 @@
-//ESCONDER LINHA
-$(document).ready(function esconder() {
-	$(".to_hide").click(function(){
-		var item = $(this)
-		item.hide()
-		$("#comprados").append('<tr>'+item.html()+'</tr>')
+//MARCA COMO COMPRADO
+$(document).ready(function clicktoHide() {
+	$("#comprados").css("display", "none")
+	$(".to_hide").click(function hide(){
+		var line = $(this)
+		line.hide()
+		$("#comprados").css({"display": "block", "width": "100%"})
+		$("#comprados table").css("width", "100%")
+		$("#comprados table").append("<tr>"+line.html()+"</tr>")
 	})
 })
 

@@ -1,0 +1,13 @@
+<?php
+/**
+ * @version 06/05/2019 13:57:03
+ * @author jose_helio@gmail.com
+ *
+ */
+
+include_once PATH_INCLUDE.'modal.phtml';
+$data = HelperView::getViewData();
+?>
+<h2>check</h2>
+<?php echo HelperView::printAlert()?>
+<?php echo $data['form']?>
