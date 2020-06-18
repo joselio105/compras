@@ -16,8 +16,10 @@ final class Model_Hst extends Model_Class{
             $this->setJoin('lcp_emb', 'lcp_mcd.embalagem=lcp_emb.id', array('capacidade', 'tipo'=>'emb_tipo', 'unidade'));
             $this->setJoin('lcp_und', 'lcp_emb.unidade=lcp_und.id', array('sigla'));
             $this->setJoin('lcp_emb_tp', 'lcp_emb.tipo=lcp_emb_tp.id', array('nome'=>'emb_tp_nome'));
+            $this->setSubQuery('SELECT quantidade FROM lcp_hst WHERE data IS NOT NULL AND lcp_hst.mercadoria=tbl.mercadoria ORDER BY data DESC LIMIT 1', 'lastQtd');
+            $this->setSubQuery('SELECT preco FROM lcp_hst WHERE data IS NOT NULL AND lcp_hst.mercadoria=tbl.mercadoria ORDER BY data DESC LIMIT 1', 'lastPreco');
+            $this->setSubQuery('SELECT data FROM lcp_hst WHERE data IS NOT NULL AND lcp_hst.mercadoria=tbl.mercadoria ORDER BY data DESC LIMIT 1', 'lastDate');
             $this->concat(array('lcp_pdt.nome', 'lcp_emb_tp.nome', 'lcp_emb.capacidade', 'lcp_und.sigla'), 'nome', ' ');
-            $this->setSubQuery('SELECT preco FROM lcp_hst WHERE quantidade!=0 AND lcp_hst.mercadoria=tbl.mercadoria ORDER BY data DESC LIMIT 1', 'lastPreco');
         }
     }
     

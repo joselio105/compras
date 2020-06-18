@@ -29,6 +29,9 @@ abstract class Model_Class extends DB_Connect_Class{
         $this->setTableName();
         $this->setFields();
         $this->count = FALSE;
+        $this->join = array();
+        $this->concat = array();
+        $this->subSql = array();
     }
     
     /**

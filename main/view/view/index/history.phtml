@@ -32,7 +32,7 @@ $data = HelperView::getViewData();
             <td><?php echo $l['nome']?></td>
             <td><?php echo $l['lastQtd']?></td>
             <td><?php echo HelperData::printLikeMoney($l['lastPreco'])?></td>
-            <td><?php echo date('d/m/Y', strtotime($l['lastDate']))?></td>
+            <td><?php echo NULL?></td>
             <td><?php echo $data['link']['view'][$l['id']]?></td>
         </tr>
         <?php endforeach?>

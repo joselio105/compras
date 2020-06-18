@@ -11,16 +11,15 @@ final class index extends Controller_Class{
     private $produto;
     
     public function __construct(){
-        parent::__construct();
         $this->mercadoria = HelperNavigation::getParam('mcd_id');
         $this->produto = HelperNavigation::getParam('pdt_id');
+        parent::__construct();
     }
     
    public function main(){
         $view = array();
         
-        $view['lista'] = $this->_model->read("quantidade IS NULL", 'nome');
-        //var_dump($view['lista']);die;
+        $view['lista'] = $this->_model->read("data IS NULL", 'nome');
         
         $ctrl_alias = 'Lista de Compras';
         $view['link']['add'] = new Helper_Button('add', $ctrl_alias);
@@ -29,11 +28,12 @@ final class index extends Controller_Class{
         $view['link']['hst'] = new Helper_Button('history', $ctrl_alias);
         $view['link']['hst']->setPermitions(HelperAuth::getPermitionByType(PERMITION_LEVEL_PUBLIC));
         
+        $view['total'] = 0;
         foreach ($view['lista'] as $l):
-            foreach (array('del', 'check') as $act):
+            foreach (array('del', 'udt', 'check') as $act):
             
                 $params = array('id'=>$l['id']);
-                if($act=='check'){
+                if(in_array($act, array('check', 'udt'))){
                     $params['pdt_id'] = $l['produto'];
                     $params['mcd_id'] = $l['mercadoria'];
                 }
@@ -44,6 +44,8 @@ final class index extends Controller_Class{
                     $view['link'][$act][$l['id']]->setTitle('Marca Item como Comprado');
                 
             endforeach;
+            
+            $view['total']+= $l['preco']*$l['quantidade'];
         endforeach;
         
         HelperView::setViewData($view);
@@ -53,9 +55,8 @@ final class index extends Controller_Class{
         $view = array();
         
         $ctrl_alias = 'Lista de Compras';
-        foreach ($this->_model->read("quantidade>0", 'nome') as $l):
+        foreach ($this->_model->read("data<>NULL", 'nome') as $l):
             $view['lista'][$l['mercadoria']] = $l;
-        
             foreach (array('check', 'view') as $act):            
                 $params = array(
                     'id'=>$l['id'],
@@ -86,8 +87,11 @@ final class index extends Controller_Class{
     public function add_list(){
         $view = array();
         
+        $mercadoria = $this->_model->readOne("tbl.mercadoria={$this->id}");
         $values = array(
-            'mercadoria'=>$this->id
+            'mercadoria'=>$this->id,
+            'quantidade'=>$mercadoria['quantidade'],
+            'preco'=>$mercadoria['preco']
         );
         if ($this->_model->create($values))
             HelperNavigation::redirect(HelperNavigation::getController());
@@ -115,7 +119,7 @@ final class index extends Controller_Class{
      * @see Controller_Class::setModel()
      */
     protected function setModel(){
-        $this->_model = new Model_Hst();
+        $this->_model = new Model_Hst(TRUE);
     }
 
     /**
@@ -124,6 +128,15 @@ final class index extends Controller_Class{
      */
     protected function setForm(){
         $this->_form = new Form_Hst();
+    }
+    
+    protected function getValues(){
+        $values = parent::getValues();
+        $mcd = $this->_model->readOne("tbl.id={$values['mercadoria']}");
+        $values['quantidade'] = $mcd['lastQtd'];
+        $values['preco'] = $mcd['lastPreco'];
+        
+        return $values;
     }
 
     //NEW_METHOD
