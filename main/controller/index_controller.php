@@ -87,11 +87,12 @@ final class index extends Controller_Class{
     public function add_list(){
         $view = array();
         
-        $mercadoria = $this->_model->readOne("tbl.mercadoria={$this->id}");
+        $mercadoria = $this->_model->read("mercadoria={$this->id}", 'tbl.id', TRUE);
+        
         $values = array(
             'mercadoria'=>$this->id,
-            'quantidade'=>$mercadoria['quantidade'],
-            'preco'=>$mercadoria['preco']
+            'quantidade'=>$mercadoria[0]['quantidade'],
+            'preco'=>$mercadoria[0]['preco']
         );
         if ($this->_model->create($values))
             HelperNavigation::redirect(HelperNavigation::getController());
