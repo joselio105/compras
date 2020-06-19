@@ -87,13 +87,7 @@ final class index extends Controller_Class{
     public function add_list(){
         $view = array();
         
-        $mercadoria = $this->_model->readOne("tbl.mercadoria={$this->id}");
-        $values = array(
-            'mercadoria'=>$this->id,
-            'quantidade'=>$mercadoria['quantidade'],
-            'preco'=>$mercadoria['preco']
-        );
-        if ($this->_model->create($values))
+        if ($this->_model->create($this->getValues()))
             HelperNavigation::redirect(HelperNavigation::getController());
         
         HelperView::setViewData($view);
@@ -132,9 +126,21 @@ final class index extends Controller_Class{
     
     protected function getValues(){
         $values = parent::getValues();
-        $mcd = $this->_model->readOne("tbl.id={$values['mercadoria']}");
-        $values['quantidade'] = $mcd['lastQtd'];
-        $values['preco'] = $mcd['lastPreco'];
+        $this->id = (HelperNavigation::getAction()=='add' ? $values['mercadoria'] : $this->id);
+        if(HelperNavigation::getAction()!='udt'){
+            $mercadoria = $this->_model->read("mercadoria={$this->id}", 'tbl.id', TRUE);
+            $values = array(
+                'mercadoria'=>$this->id,
+                'quantidade'=>$mercadoria[0]['quantidade'],
+                'preco'=>$mercadoria[0]['preco']
+            );
+            
+            $where = "mercadoria={$this->id} AND data IS NULL";
+            if(!empty($this->_model->read($where))){
+                HelperView::setAlert("Essa mercadoria já consta na lista de compras");
+                HelperNavigation::redirect("index");
+            }
+        }
         
         return $values;
     }

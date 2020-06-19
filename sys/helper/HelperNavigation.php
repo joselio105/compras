@@ -49,6 +49,7 @@ final class HelperNavigation extends Start{
     public static function redirect($controller, $action=null, array $params=null){
         $goto = self::getUrl($controller, $action, $params);
         header("Location: {$goto}");
+        die();
     }
     
     /**
