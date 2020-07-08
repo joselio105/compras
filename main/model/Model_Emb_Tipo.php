@@ -12,7 +12,7 @@ final class Model_Emb_Tipo extends Model_Class{
      * @see Model_Class::setTableName()
      */
     protected function setTableName(){
-        $this->_table = 'lcp_emb_tp';
+        $this->_table = 'embalagem_tipo';
     }
 
     /**

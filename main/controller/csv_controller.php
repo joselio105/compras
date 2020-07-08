@@ -11,13 +11,13 @@ final class csv extends Controller_Class{
     public function __construct(){
         parent::__construct();
         $this->models = array(
-            'pdt_tp' => new Model_Pdt_Tipo(),
-            'und' => new Model_Und(),
-            'emb_tp'=> new Model_Emb_Tipo(),
-            'emb'=> new Model_Emb(),
-            'pdt'=> new Model_Pdt(),
-            'mcd'=> new Model_Mcd(),
-            'hst'=> new Model_Hst()
+            'produto_tipo' => new Model_Pdt_Tipo(),
+            'unidade' => new Model_Und(),
+            'embalagem_tipo'=> new Model_Emb_Tipo(),
+            'embalagem'=> new Model_Emb(),
+            'produto'=> new Model_Pdt(),
+            'mercadoria'=> new Model_Mcd(),
+            'compra'=> new Model_Hst()
         );
     }
     
@@ -54,8 +54,11 @@ final class csv extends Controller_Class{
         if(!is_null($file)){
             $fileJson['dataStructure'] = PATH_CONTENT."csv/{$file}.json";
             $filename = PATH_CONTENT."csv/{$file}.csv";
-            $content = file($filename);
+            foreach(file($filename) as $line)
+				$content[] = str_replace("\r\n", "", $line);
+				
             $labels = explode(',', $content[0]);
+			//var_dump($labels, $content);die;
                 
             array_shift($content);
             array_pop($content);
@@ -63,15 +66,18 @@ final class csv extends Controller_Class{
             if(is_null($level)){
                 
                 foreach($content as $i=>$line):
+					//Troca vírgula por ponto nas células numéricas
                     $line = preg_replace('/(\d+)(\,)(\d+)/', '$1.$3', $line);
+					//Retira as aspas delimitadoras de valores
                     $line = str_replace('"', '', $line);
+					//Retira o símbolo de moeda
                     $line = str_replace('R$ ', '', $line);
                     
-                    $itens = explode(',', $line);
+                    $itens = explode(',', $line.',');
                     foreach ($labels as $labelKey=>$labelName)
                         $view['ds'][$i][$labelName] = $itens[$labelKey];
                 endforeach;
-                
+				
                 HelperFile::jsonWrite($fileJson['dataStructure'], $view['ds'], TRUE);
             }
             
@@ -79,9 +85,9 @@ final class csv extends Controller_Class{
                 $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
                 
                 $tables = array(
-                    'pdt_tp' => 'Categoria',
-                    'und' => 'Unidade',
-                    'emb_tp' => 'Embalagem'
+                    'produto_tipo' => 'Categoria',
+                    'unidade' => 'Unidade',
+                    'embalagem_tipo' => 'Embalagem'
                 );
                 
                 foreach ($labels as $toList):
@@ -103,8 +109,8 @@ final class csv extends Controller_Class{
                 
                 foreach ($view['ds'] as $i=>$line):
                     foreach (array(
-                        'pdt'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
-                        'emb'=>"capacidade='{$line['Capacidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
+                        'produto'=>"nome='{$line['Item']}' AND tipo={$line['Categoria_id']}",
+                        'embalagem'=>"capacidade='{$line['Capacidade']}' AND unidade='{$line['Unidade_id']}' AND tipo='{$line['Embalagem_id']}'"
                         ) as $modelName=>$where):
                         $id = $this->getId($modelName, $where);
                         if(!is_null($id))
@@ -123,8 +129,9 @@ final class csv extends Controller_Class{
                 $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
                 
                 foreach ($view['ds'] as $i=>$line):
-                    $modelName = 'mcd';
-                    $where = "produto='{$line['pdt_id']}' AND embalagem='{$line['emb_id']}'";
+
+                    $modelName = 'mercadoria';
+                    $where = "produto='{$line['produto_id']}' AND embalagem='{$line['embalagem_id']}'";
 
                     $id = $this->getId($modelName, $where);
                     if(!is_null($id))
@@ -143,8 +150,8 @@ final class csv extends Controller_Class{
                 $data = date('Y-m-d', strtotime($file));
                 
                 foreach ($view['ds'] as $i=>$line):
-                    $modelName = 'hst';
-                    $where = "mercadoria='{$line['mcd_id']}' AND quantidade='{$line['Quantidade']}' AND preco='{$line['ValUnit']}' AND data='$data'";
+                    $modelName = 'compra';
+                    $where = "mercadoria='{$line['mercadoria_id']}' AND quantidade='{$line['Quantidade']}' AND preco='{$line['ValUnit']}' AND data='$data'";
                     $id = $this->getId($modelName, $where);
                     if(!is_null($id))
                         $view['ds'][$i][$modelName.'_id'] = $id;
