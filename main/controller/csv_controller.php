@@ -96,6 +96,7 @@ final class csv extends Controller_Class{
                         $view['ds'][$i][$toList] = $line[$toList];
                         if($modelName)
                             $view['ds'][$i][$toList.'_id'] = $this->getId($modelName, "nome = '{$line[$toList]}'");                 
+
                     endforeach;
                 endforeach;
                     
@@ -128,8 +129,10 @@ final class csv extends Controller_Class{
                 $view['ds'] = HelperFile::jsonRead($fileJson['dataStructure']);
                 
                 foreach ($view['ds'] as $i=>$line):
+
                     $modelName = 'mercadoria';
                     $where = "produto='{$line['produto_id']}' AND embalagem='{$line['embalagem_id']}'";
+
                     $id = $this->getId($modelName, $where);
                     if(!is_null($id))
                         $view['ds'][$i][$modelName.'_id'] = $id;
