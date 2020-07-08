@@ -18,7 +18,7 @@ final class Model_Pdt extends Model_Class{
      * @see Model_Class::setTableName()
      */
     protected function setTableName(){
-        $this->_table = 'lcp_pdt';
+        $this->_table = 'produto';
     }
 
     /**

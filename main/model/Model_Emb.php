@@ -21,7 +21,7 @@ final class Model_Emb extends Model_Class{
      * @see Model_Class::setTableName()
      */
     protected function setTableName(){
-        $this->_table = 'lcp_emb';
+        $this->_table = 'embalagem';
     }
 
     /**

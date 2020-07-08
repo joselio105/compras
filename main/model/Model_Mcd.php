@@ -24,7 +24,7 @@ final class Model_Mcd extends Model_Class{
      * @see Model_Class::setTableName()
      */
     protected function setTableName(){
-        $this->_table = 'lcp_mcd';
+        $this->_table = 'mercadoria';
     }
 
     /**

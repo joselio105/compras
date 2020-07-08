@@ -136,7 +136,8 @@ final class index extends Controller_Class{
             );
             
             $where = "mercadoria={$this->id} AND data IS NULL";
-            if(!empty($this->_model->read($where))){
+            $lista = $this->_model->read($where);
+            if(!empty($lista)){
                 HelperView::setAlert("Essa mercadoria já consta na lista de compras");
                 HelperNavigation::redirect("index");
             }
