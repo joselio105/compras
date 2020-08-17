@@ -1,0 +1,95 @@
+header, footer{
+	width: 100vw;
+	background: var(--color-primary);
+}
+
+header #header_inner,
+footer #footer_inner{
+	max-width: 700px;
+    width: 90%;
+    margin: 1.2rem auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+}
+
+header #header_inner .header_info{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+header #header_inner img{
+	height: 7rem;
+	margin-right: 1.2rem;
+}
+
+header #header_inner h1{
+	font: 700 2.2rem Roboto;
+	color: var(--color-title-in-primary);
+}
+
+header #header_inner #open_menu{
+	line-height: 7.5rem;
+	font-size: 7rem;
+	color: var(--color-title-in-primary);
+	margin-left: 1.2rem;
+}
+
+header #header_inner nav.closed{
+	display: none;
+}
+
+header #header_inner nav.oppened{
+	position: fixed;
+	top: 1.2rem;
+	left: 0;
+	width: 25rem;
+	background-color: var(--color-box-base);
+	border-radius: .8rem;
+	padding: 1.2rem;
+	border: 1px solid var(--color-line-in-white);
+	z-index: 100;
+}
+
+header #header_inner nav li{
+	padding: 1.2rem 0;	
+}
+
+header #header_inner nav a{
+	text-decoration: none;
+	color: var(--color-text-title);
+	transition: .5s;
+	text-transform: uppercase;
+}
+
+header #header_inner nav a:hover{
+	color: var(--color-text-complement);
+}
+
+footer #footer_inner{
+	padding: 0 1.2rem;
+}
+
+footer #footer_inner h1{
+	color: var(--color-title-in-primary);
+	font-size: 1.8rem;
+	line-height: 2rem;
+}
+
+footer #footer_inner h2{
+	font-size: 1.4rem;
+	line-height: 1.6rem;
+}
+
+footer #footer_inner a{
+	text-decoration: none;
+	color: var(--color-text-in-primary);
+	transition: .5s;
+	padding: .8rem;
+}
+
+footer #footer_inner a:hover{
+	background-color: var(--color-primary-dark);
+}
