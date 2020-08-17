@@ -1,0 +1,24 @@
+
+@charset "UTF-8";
+
+.add, .close, .del, .view, .info, .contato, .udt, .code, .read, .add_action, .add_view, .add_list, .check, .history{
+    background-repeat: no-repeat;
+	background-position: center;
+	background-size: 40px 40px;
+	border-radius: 50%;
+	width: 50px;
+}
+ .add{background-image: url(../img/icons/add.svg);}
+ .close{background-image: url(../img/icons/close.svg);}
+ .del{background-image: url(../img/icons/del.svg);}
+ .view{background-image: url(../img/icons/view.svg);}
+ .info{background-image: url(../img/icons/info.svg);}
+ .contato{background-image: url(../img/icons/contato.svg);}
+ .udt{background-image: url(../img/icons/udt.svg);}
+ .code{background-image: url(../img/icons/code.svg);}
+ .read{background-image: url(../img/icons/read.svg);}
+ .add_action{background-image: url(../img/icons/add_action.svg);}
+ .add_view{background-image: url(../img/icons/add_view.svg);}
+ .add_list{background-image: url(../img/icons/add_list.svg);}
+ .check{background-image: url(../img/icons/check.svg);}
+ .history{background-image: url(../img/icons/history.svg);}

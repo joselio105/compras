@@ -123,10 +123,10 @@ $(document).ready(function(){
 //MENU RESPONSIVO
 $(document).ready(function(){
 	$("#open_menu").click(function(){
-		$("header menu").attr("class", "open")		
+		$("header nav").attr("class", "oppened")		
 	})
 	$("main").click(function(){
-		$(".open").attr("class", null)
+		$(".oppened").attr("class", "closed")
 	})
 })
 

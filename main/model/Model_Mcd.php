@@ -10,12 +10,12 @@ final class Model_Mcd extends Model_Class{
     public function __construct($join=FALSE){
         parent::__construct();
         if($join){
-            $this->setJoin('lcp_pdt', 'tbl.produto=lcp_pdt.id', array('nome'=>'produto_nome', 'tipo'));
-            $this->setJoin('lcp_pdt_tp', 'lcp_pdt.tipo=lcp_pdt_tp.id', array('nome'=>'tipo_nome'));
-            $this->setJoin('lcp_emb', 'tbl.embalagem=lcp_emb.id', array('capacidade', 'tipo'=>'emb_tipo', 'unidade'));
-            $this->setJoin('lcp_und', 'lcp_emb.unidade=lcp_und.id', array('sigla'));
-            $this->setJoin('lcp_emb_tp', 'lcp_emb.tipo=lcp_emb_tp.id', array('nome'=>'emb_tp_nome'));
-            $this->concat(array('lcp_pdt.nome', 'lcp_emb_tp.nome', 'lcp_emb.capacidade', 'lcp_und.sigla'), 'nome', ' ');
+            $this->setJoin('produto', 'tbl.produto=produto.id', array('nome'=>'produto_nome', 'tipo'));
+            $this->setJoin('produto_tipo', 'produto.tipo=produto_tipo.id', array('nome'=>'tipo_nome'));
+            $this->setJoin('embalagem', 'tbl.embalagem=embalagem.id', array('capacidade', 'tipo'=>'emb_tipo', 'unidade'));
+            $this->setJoin('unidade', 'embalagem.unidade=unidade.id', array('sigla'));
+            $this->setJoin('embalagem_tipo', 'embalagem.tipo=embalagem_tipo.id', array('nome'=>'emb_tipo_nome'));
+            $this->concat(array('produto.nome', 'embalagem_tipo.nome', 'embalagem.capacidade', 'unidade.sigla'), 'nome', ' ');
         }
     }
     

@@ -1,22 +1,22 @@
 <?php
 /**
- * @version 26/11/2018 10:23:51
+ * @version 17/08/2020 16:53:22
  * @author jose_helio@gmail.com
  *
  */
 
-include_once PATH_INCLUDE.'modal.phtml';
 $data = HelperView::getViewData();
+//var_dump($data['lista']);die;
 ?>
 
-<h2>Lista de Compras</h2>
+<h2>Comprar</h2>
 <?php echo HelperView::printAlert()?>
 
-<div id="commands">
+<nav id="commands">
 	<?php echo $data['link']['add']?>
 	<?php echo $data['link']['hst']?>
 	<?php include_once PATH_INCLUDE.'busca.phtml';?>
-</div>
+</nav>
 
 <p>Total Estimado: <b><?php echo HelperData::printLikeMoney($data['total'])?></b></p>
 
@@ -24,23 +24,20 @@ $data = HelperView::getViewData();
 <?php if(key_exists('lista', $data)):?>
 	<table>
     	<tr>
-            <th></th>
-            <th></th>
             <th>Produto</th>
-            <th>Quantidade</th>
+            <th>Quant</th>
             <th>Preço Unit.</th>
             <th>Preço Total</th>
-            <th></th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
-        <tr class="to_hide">
-            <td><?php echo $data['link']['check'][$l['id']]?></td>
-            <td><?php echo $data['link']['udt'][$l['id']]?></td>          
-            <td class="hidding"><?php echo $l['nome']?></td>
+        <tr class="to_hide">      
+            <td class="hidding">
+            	<b><?php echo $l['produto_nome']?></b>
+				<?php echo substr($l['nome'], strlen($l['produto_nome'])+1)?>
+            </td>
             <td><?php echo $l['quantidade']?></td>
             <td><?php echo HelperData::printLikeMoney($l['preco'])?></td>
-            <td><?php echo HelperData::printLikeMoney($l['preco']*$l['quantidade'])?></td>    
-            <td><?php echo $data['link']['del'][$l['id']]?></td>  
+            <td><?php echo HelperData::printLikeMoney($l['preco']*$l['quantidade'])?></td>  
         </tr>
         <?php endforeach?>
     </table>
@@ -48,17 +45,14 @@ $data = HelperView::getViewData();
 </div>
 
 <div id="comprados">
-    <h2>Comprados</h2>
+    <h2>No Carrinho</h2>
     <div id="table">
     	<table>
         	<tr>
-                <th></th>
-                <th></th>
                 <th>Produto</th>
-                <th>Quantidade</th>
+                <th>Quant</th>
                 <th>Preço Unit.</th>
                 <th>Preço Total</th>
-                <th></th>
           	</tr>
       	</table>
     </div>
