@@ -31,13 +31,13 @@ $data = HelperView::getViewData();
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr class="to_hide">      
-            <td class="hidding">
+            <td class="hidding" width="50%">
             	<b><?php echo $l['produto_nome']?></b>
 				<?php echo substr($l['nome'], strlen($l['produto_nome'])+1)?>
             </td>
-            <td><?php echo $l['quantidade']?></td>
-            <td><?php echo HelperData::printLikeMoney($l['preco'])?></td>
-            <td><?php echo HelperData::printLikeMoney($l['preco']*$l['quantidade'])?></td>  
+            <td width="10%"><?php echo $l['quantidade']?></td>
+            <td width="20%"><?php echo HelperData::printLikeMoney($l['preco'])?></td>
+            <td width="20%"><?php echo HelperData::printLikeMoney($l['preco']*$l['quantidade'])?></td>  
         </tr>
         <?php endforeach?>
     </table>
