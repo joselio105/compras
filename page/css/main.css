@@ -5,8 +5,8 @@
     --color-primary: #8257E5; /*OK*/
     --color-primary-dark: #774DD6;
     --color-primary-darker: #6842c2;
-    --color-secondary: #04D361;
-    --color-secondary-dark: #04BF58;
+    --color-secondary: #04D361; /*OK*/
+    --color-secondary-dark: #04BF58; /*OK*/
     --color-title-in-primary: #FFFFFF; /*OK*/
     --color-text-in-primary: #D4C2FF; /*OK*/
     --color-text-title: #32264D; /*OK*/
@@ -14,7 +14,7 @@
     --color-text-base: #6A6180; /*OK*/
     --color-line-in-white: #E6E6F0; /*OK*/
     --color-input-background: #F8F8FC;
-    --color-button-text: #FFFFFF;
+    --color-button-text: #FFFFFF; /*OK*/
     --color-box-base: #FFFFFF; /*OK*/
     --color-box-footer: #FAFAFC;
     --color-small-info: #C1BCCC; /*OK*/

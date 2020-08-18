@@ -5,8 +5,10 @@
 .tooltip:hover .ttp_text{
 	display: block;
 	padding: .8rem;
+	top: 100%;
+	left: 10%;
 	position: absolute;
-	min-width: 12rem;
+	min-width: 15rem;
 	background: var(--color-small-info);
 	font-weight: 400;
 	font-size: 1.2rem;

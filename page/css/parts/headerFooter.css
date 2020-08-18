@@ -12,6 +12,7 @@ footer #footer_inner{
 	justify-content: space-between;
 	align-items: center;
 	position: relative;
+	flex-wrap: wrap;
 }
 
 header #header_inner .header_info{
@@ -92,4 +93,59 @@ footer #footer_inner a{
 
 footer #footer_inner a:hover{
 	background-color: var(--color-primary-dark);
+}
+
+@media (min-width: 700px){
+	
+	header #header_inner,
+	footer #footer_inner{
+		max-width: 1240px;
+	    width: 100%;
+    }
+    
+    header #header_inner #open_menu{
+    	display: none;
+    }
+    
+    header #header_inner nav.closed{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	header #header_inner nav ul{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 1.2rem;
+		position: relative;
+	}
+	
+	header #header_inner nav li{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		list-style: none;
+		min-width: 200px;
+		position: relative;
+	}
+	
+	header #header_inner nav li a{
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: .8rem;
+		background: var(--color-secondary);
+		color: var(--color-button-text);
+		border: none;
+		border-radius: .8rem;
+		transition: .5s;
+	}
+	
+	header #header_inner nav li a:hover {
+		background: var(--color-secondary-dark);			
+	}
 }
