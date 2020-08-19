@@ -97,6 +97,14 @@ td{
 	font-size: 1.2rem;
 }
 
+main table .selected{
+	background-color: var(--color-secondary-light);
+}
+
+main table .db-selected{
+	background-color: var(--color-primary-light);
+}
+
 main p{
 	font-weight: 400;
 	color: var(--color-text-base);

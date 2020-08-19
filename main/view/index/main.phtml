@@ -30,7 +30,7 @@ $data = HelperView::getViewData();
             <th>Preço Total</th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
-        <tr class="to_hide">      
+        <tr id="<?php echo $l["id"]?>">      
             <td class="hidding" width="50%">
             	<b><?php echo $l['produto_nome']?></b>
 				<?php echo substr($l['nome'], strlen($l['produto_nome'])+1)?>

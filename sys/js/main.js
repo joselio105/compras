@@ -1,13 +1,75 @@
+// s/ JQuery
+//Selecionar linha da tabela
+
+window.addEventListener("load", () => {
+	const linhas = document.querySelectorAll("tr")
+	const singleClick = []
+	const doubleClick = []
+
+	linhas.forEach(linha => {
+		const linhaId = linha.id
+		let clicks = 0
+		
+		//primeiro clique => seleciona
+		linha.addEventListener("click", () => {
+			switch (clicks){
+				case 0:				
+					linha.className = "selected"
+					addToList(linhaId, singleClick)
+					console.log(`Primeiro clique em ${linhaId}`)
+					console.log(singleClick)
+					clicks = 1
+				break	
+				
+				case 1:
+					linha.className = "db-selected"
+					removeFromList(linhaId, singleClick)
+					addToList(linhaId, doubleClick)
+					console.log(`Segundo clique em ${linhaId}`)
+					console.log(doubleClick)
+					clicks = 2
+				break
+				
+				case 2:
+					linha.className = ""
+					removeFromList(linhaId, doubleClick)
+					console.log(`Terceiro clique em ${linhaId}`)
+					console.log(singleClick)
+					console.log(doubleClick)
+					clicks = 0
+				break			
+			}	
+		})
+	})
+	
+})
+
+function addToList(element, list){
+	console.log(`Acrescentando ${element} na lista`)
+	if(list.indexOf(element) === -1){
+		list.push(element)
+	}
+}
+
+function removeFromList(element, list){
+	console.log(`Removendo ${element} da lista`)
+	const busca = list.indexOf(element)
+	if(busca !== -1){
+		list.splice(busca, 1)
+	}	
+}
+
+
 //MARCA COMO COMPRADO
 $(document).ready(function clicktoHide() {
 	$("#comprados").css("display", "none")
-	$(".to_hide").click(function hide(){
+	/*$(".to_hide").click(function hide(){
 		var line = $(this)
 		line.hide()
 		$("#comprados").css({"display": "block", "width": "100%"})
 		$("#comprados table").css("width", "100%")
 		$("#comprados table").append("<tr>"+line.html()+"</tr>")
-	})
+	})*/
 })
 
 //AUTO COMPLETAR
