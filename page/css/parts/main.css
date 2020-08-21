@@ -46,16 +46,18 @@ main #commands #busca svg{
 
 main .button{
 	width: 12rem;
+	min-height: 4.2rem;
 	border-radius: .8rem;
 	border: none;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 40px 40px;
+	color: var(--color-button-text);
 	background-color: var(--color-secondary);
 	transition: .5s;
 }
 
-main .button{
+main .button:hover{
 	background-color: var(--color-secondary-dark);
 }
 
@@ -65,9 +67,10 @@ main .udt{background-image: url(../../img/icons/udt.svg);}
 main .check{background-image: url(../../img/icons/check.svg);}
 main .history{background-image: url(../../img/icons/history.svg);}
 
-main #table{
+main .table{
 	max-width: 100%;
 	overflow-x: auto; 
+	margin-bottom: 1.2rem;
 }
 
 main table{
@@ -95,6 +98,16 @@ th{
 
 td{
 	font-size: 1.2rem;
+}
+
+main table .selected{
+	background-color: var(--color-secondary-light);
+}
+
+main table .hide{
+	/*display: none;*/
+	text-decoration: overline;
+	color: silver;
 }
 
 main p{
