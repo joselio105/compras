@@ -20,10 +20,10 @@ $data = HelperView::getViewData();
 
 <p>Total Estimado: <b><?php echo HelperData::printLikeMoney($data['total'])?></b></p>
 
-<div id="table">
+<div class="table">
 <?php if(key_exists('lista', $data)):?>
-	<table>
-    	<tr>
+	<table id="comprar-table">
+    	<tr id="0">
             <th>Produto</th>
             <th>Quant</th>
             <th>Preço Unit.</th>
@@ -46,8 +46,8 @@ $data = HelperView::getViewData();
 
 <div id="comprados">
     <h2>No Carrinho</h2>
-    <div id="table">
-    	<table>
+    <div class="table">
+    	<table id="comprados-table">
         	<tr>
                 <th>Produto</th>
                 <th>Quant</th>
@@ -56,4 +56,5 @@ $data = HelperView::getViewData();
           	</tr>
       	</table>
     </div>
+    <button id="cleanBasket" class="button">Limpar</button>
 </div>

@@ -69,6 +69,10 @@ header #header_inner nav a:hover{
 	color: var(--color-text-complement);
 }
 
+footer{
+	margin-top: 1.2rem; 
+}
+
 footer #footer_inner{
 	padding: 0 1.2rem;
 }

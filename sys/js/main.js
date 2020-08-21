@@ -3,30 +3,47 @@
 
 window.addEventListener("load", () => {
 	const linhas = document.querySelectorAll("tr")
-	const singleClick = []
+	const noCarrinho = readListOnServer() || []
 	const doubleClick = []
 
+	console.log(noCarrinho)
+	renderTableComprados(noCarrinho)
+	
 	linhas.forEach(linha => {
 		const linhaId = linha.id
 		let clicks = 0
 		
-		//primeiro clique => seleciona
+		if(noCarrinho.indexOf(linhaId) !== -1){
+			clicks = 1		
+		}
+		/*
+			Primeiro clique: salva estado da tabela
+				+ Armazena dados no localStorage
+				+ Renderiza tabela dos itens no carrinho
+				+ Botão para limpar o carrinho de compras
+				- Colocar itens em ordem alfabética
+				- Retornar item do carrinho
+			Segundo clique seleciona
+			Terceiro clique deseleciona
+		*/
 		linha.addEventListener("click", () => {
 			switch (clicks){
-				case 0:				
-					linha.className = "selected"
-					addToList(linhaId, singleClick)
-					console.log(`Primeiro clique em ${linhaId}`)
-					console.log(singleClick)
-					clicks = 1
+				case 0:	
+					if(linhaId !== 0){
+						linha.className = "hide"						
+						addToList(linhaId, noCarrinho)	
+						saveListOnServer(noCarrinho)
+						renderTableComprados(noCarrinho)
+						clicks = 1
+					}						
 				break	
 				
 				case 1:
-					linha.className = "db-selected"
-					removeFromList(linhaId, singleClick)
+					linha.className = "selected"
+					removeFromList(linhaId, noCarrinho)
+					saveListOnServer(noCarrinho)
 					addToList(linhaId, doubleClick)
 					console.log(`Segundo clique em ${linhaId}`)
-					console.log(doubleClick)
 					clicks = 2
 				break
 				
@@ -34,15 +51,48 @@ window.addEventListener("load", () => {
 					linha.className = ""
 					removeFromList(linhaId, doubleClick)
 					console.log(`Terceiro clique em ${linhaId}`)
-					console.log(singleClick)
-					console.log(doubleClick)
 					clicks = 0
 				break			
 			}	
 		})
 	})
 	
+	document.querySelector("#cleanBasket").addEventListener("click", ()=>{
+		saveListOnServer([])
+		renderTableComprados([])
+	})
+	
 })
+
+function renderTableComprados(noCarrinho){
+	const divComprados = document.querySelector("#comprados")
+	const trTableComprarList = document.querySelectorAll("#comprar-table tr")
+	const tableComprados = document.querySelector("#comprados-table")
+
+	if(noCarrinho.length > 0){
+		divComprados.setAttribute("style", "display: table; width: 100%;")
+		divComprados.className = ""
+		noCarrinho.forEach(linhaId=>{
+			trTableComprarList.forEach(linha=>{
+				if(linha.id === linhaId){
+					linha.className = ""
+					tableComprados.appendChild(linha)
+				}
+			})			
+		})
+	}else{
+		divComprados.setAttribute("style", "display: none;")
+	}
+}
+
+function saveListOnServer(noCarrinho){
+	console.log(noCarrinho)
+	localStorage.setItem("noCarrinho", JSON.stringify(noCarrinho))
+}
+
+function readListOnServer(){
+	return JSON.parse(localStorage.getItem("noCarrinho"))
+}
 
 function addToList(element, list){
 	console.log(`Acrescentando ${element} na lista`)
@@ -61,16 +111,16 @@ function removeFromList(element, list){
 
 
 //MARCA COMO COMPRADO
-$(document).ready(function clicktoHide() {
+/*$(document).ready(function clicktoHide() {
 	$("#comprados").css("display", "none")
-	/*$(".to_hide").click(function hide(){
+	$(".to_hide").click(function hide(){
 		var line = $(this)
 		line.hide()
 		$("#comprados").css({"display": "block", "width": "100%"})
 		$("#comprados table").css("width", "100%")
 		$("#comprados table").append("<tr>"+line.html()+"</tr>")
-	})*/
-})
+	})
+})*/
 
 //AUTO COMPLETAR
 $(document).ready(function() {
