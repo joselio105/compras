@@ -1,92 +1,151 @@
 // s/ JQuery
 //Selecionar linha da tabela
 
+/*
+
++ 01) Estado inicial (tabela1 preenchida, tabela2 vazia)
++ 02) Verificar itens no localStorage, remover da tabela1 e enviar para a tabela2
+03) Ordenar tabelas
+04) Em caso de clique na tabela1:
++	04.1) Acrecesntar a linha ao localStorage
++	04.2) Remover a linha da tabela1
++	04.3) Adicionar a linha à tabela2
+	04.4) Ordenar tabelas
+05) Em caso de clique na tabela2:
+	05.1) Remover linha do localStorage
+	05.2) Remover a linha da tabela2
+	05.3) Adicionar a linha à tabela1
+	05.4) Ordenar tabelas
+06) Botão que ao clicado limpa tabela2:
++	06.1) Limpa localStorage
++	06.2) Limpa tabela2
++	06.3) Recoloca itens removidos para tabela1
+	06.4) Ordena tabela1
+*/
+
 window.addEventListener("load", () => {
-	const linhas = document.querySelectorAll("tr")
-	const noCarrinho = readListOnServer() || []
-	const doubleClick = []
+	const tabela1 = document.querySelector("#comprar-table")
+	const tabela2 = document.querySelector("#comprados-table")
+	const selecteds = []
+	const noCarrinho = readListOnServer()	
+	const paraComprar = getRowsFromTable(tabela1)
+	const paraComprarAinda = avoidDoubleItens(noCarrinho, paraComprar)
 
 	console.log(noCarrinho)
-	renderTableComprados(noCarrinho)
+
+	renderTable(tabela1, paraComprarAinda)	
+	renderTable(tabela2, getRows(noCarrinho, paraComprar))
 	
-	linhas.forEach(linha => {
-		const linhaId = linha.id
-		let clicks = 0
-		
-		if(noCarrinho.indexOf(linhaId) !== -1){
-			clicks = 1		
-		}
-		/*
-			Primeiro clique: salva estado da tabela
-				+ Armazena dados no localStorage
-				+ Renderiza tabela dos itens no carrinho
-				+ Botão para limpar o carrinho de compras
-				- Colocar itens em ordem alfabética
-				- Retornar item do carrinho
-			Segundo clique seleciona
-			Terceiro clique deseleciona
-		*/
-		linha.addEventListener("click", () => {
-			switch (clicks){
-				case 0:	
-					if(linhaId !== 0){
-						linha.className = "hide"						
-						addToList(linhaId, noCarrinho)	
-						saveListOnServer(noCarrinho)
-						renderTableComprados(noCarrinho)
-						clicks = 1
-					}						
-				break	
-				
-				case 1:
+	paraComprarAinda.forEach(linha=>{
+		let clickNum = 0
+		linha.addEventListener("click", ()=>{
+			
+			const actions = {
+				1: ()=>{
+					console.log(`Clique ${clickNum} - Selecionar linha#${linha.id}`)
 					linha.className = "selected"
-					removeFromList(linhaId, noCarrinho)
+					addToList(linha, selecteds)
+					clickNum = 2
+				},
+				2: ()=>{
+					console.log(`Clique ${clickNum} - Deselecionar linha#${linha.id}`)
+					linha.className = ""	
+					removeFromList(linha, selecteds)
+					clickNum = 0
+				},
+				0: ()=>{
+					console.log(`Clique ${clickNum} - Enviar para o carrinho a linha#${linha.id}`)
+					addToList(linha.id, noCarrinho)
 					saveListOnServer(noCarrinho)
-					addToList(linhaId, doubleClick)
-					console.log(`Segundo clique em ${linhaId}`)
-					clicks = 2
-				break
-				
-				case 2:
-					linha.className = ""
-					removeFromList(linhaId, doubleClick)
-					console.log(`Terceiro clique em ${linhaId}`)
-					clicks = 0
-				break			
-			}	
+					renderTable(tabela2, getRows(noCarrinho, paraComprar))
+					clickNum = 1
+				}
+			}
+			
+			actions[clickNum]()
 		})
 	})
 	
 	document.querySelector("#cleanBasket").addEventListener("click", ()=>{
 		saveListOnServer([])
-		renderTableComprados([])
+		const noCarrinho = readListOnServer()
+		renderTable(tabela1, paraComprarAinda)	
+		renderTable(tabela2, getRows(noCarrinho, paraComprar))
+		
 	})
-	
 })
 
-function renderTableComprados(noCarrinho){
-	const divComprados = document.querySelector("#comprados")
-	const trTableComprarList = document.querySelectorAll("#comprar-table tr")
-	const tableComprados = document.querySelector("#comprados-table")
-
-	if(noCarrinho.length > 0){
-		divComprados.setAttribute("style", "display: table; width: 100%;")
-		divComprados.className = ""
-		noCarrinho.forEach(linhaId=>{
-			trTableComprarList.forEach(linha=>{
-				if(linha.id === linhaId){
-					linha.className = ""
-					tableComprados.appendChild(linha)
-				}
-			})			
-		})
-	}else{
-		divComprados.setAttribute("style", "display: none;")
+function renderTable(tabela, listaLinhas){
+	const titles = getTitlesFromTable(tabela)
+	const row = document.createElement("tr")
+	
+	//limpa tabela
+	while (tabela.firstChild) {
+	  tabela.removeChild(tabela.firstChild);
 	}
+	
+	//acrescenta títulos
+	row.setAttribute("class", "title")
+	titles.forEach(th=>{
+		row.appendChild(th)
+	})
+	tabela.appendChild(row)
+	
+	//acrescenta linhas
+	listaLinhas.forEach(linha=>{
+		tabela.appendChild(linha)
+	})
+}
+
+function avoidDoubleItens(toExcludeList, mainList){
+	let response = []
+	
+	mainList.forEach(item=>{
+		toExcludeList.forEach(toExclude=>{
+			if(toExclude !== item.id){
+				response.push(item)
+			}
+		})
+		if(toExcludeList.length === 0){
+			response = mainList
+		}
+	})
+	
+	return response
+}
+
+function getRows(idList, rows){
+	const response = []
+	
+	rows.forEach(row=>{
+		idList.forEach(id=>{
+			if(id === row.id){
+				response.push(row)
+			}
+		})
+	})
+	return response
+}
+
+function getTitlesFromTable(table){
+	return table.querySelectorAll("th")
+}
+
+function getRowsFromTable(table){	
+	const rows = table.querySelectorAll("tr")
+	const response = []
+	
+	rows.forEach(row=>{
+		if(row.className !== "titles"){
+			response.push(row)
+		}
+	
+	})
+	
+	return response
 }
 
 function saveListOnServer(noCarrinho){
-	console.log(noCarrinho)
 	localStorage.setItem("noCarrinho", JSON.stringify(noCarrinho))
 }
 
@@ -95,32 +154,17 @@ function readListOnServer(){
 }
 
 function addToList(element, list){
-	console.log(`Acrescentando ${element} na lista`)
 	if(list.indexOf(element) === -1){
 		list.push(element)
 	}
 }
 
 function removeFromList(element, list){
-	console.log(`Removendo ${element} da lista`)
 	const busca = list.indexOf(element)
 	if(busca !== -1){
 		list.splice(busca, 1)
 	}	
 }
-
-
-//MARCA COMO COMPRADO
-/*$(document).ready(function clicktoHide() {
-	$("#comprados").css("display", "none")
-	$(".to_hide").click(function hide(){
-		var line = $(this)
-		line.hide()
-		$("#comprados").css({"display": "block", "width": "100%"})
-		$("#comprados table").css("width", "100%")
-		$("#comprados table").append("<tr>"+line.html()+"</tr>")
-	})
-})*/
 
 //AUTO COMPLETAR
 $(document).ready(function() {

@@ -9,7 +9,7 @@ $data = HelperView::getViewData();
 //var_dump($data['lista']);die;
 ?>
 
-<h2>Comprar</h2>
+
 <?php echo HelperView::printAlert()?>
 
 <nav id="commands">
@@ -19,11 +19,11 @@ $data = HelperView::getViewData();
 </nav>
 
 <p>Total Estimado: <b><?php echo HelperData::printLikeMoney($data['total'])?></b></p>
-
+<h2>Comprar</h2>
 <div class="table">
 <?php if(key_exists('lista', $data)):?>
 	<table id="comprar-table">
-    	<tr id="0">
+    	<tr class="titles">
             <th>Produto</th>
             <th>Quant</th>
             <th>Preço Unit.</th>
@@ -31,7 +31,7 @@ $data = HelperView::getViewData();
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr id="<?php echo $l["id"]?>">      
-            <td class="hidding" width="50%">
+            <td width="50%">
             	<b><?php echo $l['produto_nome']?></b>
 				<?php echo substr($l['nome'], strlen($l['produto_nome'])+1)?>
             </td>
@@ -48,7 +48,7 @@ $data = HelperView::getViewData();
     <h2>No Carrinho</h2>
     <div class="table">
     	<table id="comprados-table">
-        	<tr>
+        	<tr class="titles">
                 <th>Produto</th>
                 <th>Quant</th>
                 <th>Preço Unit.</th>
