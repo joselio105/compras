@@ -31,8 +31,6 @@ window.addEventListener("load", () => {
 	const paraComprar = getRowsFromTable(tabela1)
 	const paraComprarAinda = avoidDoubleItens(noCarrinho, paraComprar)
 
-	console.log(noCarrinho)
-
 	renderTable(tabela1, paraComprarAinda)	
 	renderTable(tabela2, getRows(noCarrinho, paraComprar))
 	
@@ -41,19 +39,19 @@ window.addEventListener("load", () => {
 		linha.addEventListener("click", ()=>{
 			
 			const actions = {
-				1: ()=>{
+				0: ()=>{
 					console.log(`Clique ${clickNum} - Selecionar linha#${linha.id}`)
 					linha.className = "selected"
 					addToList(linha, selecteds)
-					clickNum = 2
+					clickNum = 1
 				},
-				2: ()=>{
+				1: ()=>{
 					console.log(`Clique ${clickNum} - Deselecionar linha#${linha.id}`)
 					linha.className = ""	
 					removeFromList(linha, selecteds)
 					clickNum = 0
 				},
-				0: ()=>{
+				2: ()=>{
 					console.log(`Clique ${clickNum} - Enviar para o carrinho a linha#${linha.id}`)
 					addToList(linha.id, noCarrinho)
 					saveListOnServer(noCarrinho)
@@ -73,6 +71,45 @@ window.addEventListener("load", () => {
 		renderTable(tabela2, getRows(noCarrinho, paraComprar))
 		
 	})
+	
+	document.querySelector("#btn-toBasket").addEventListener("click", ()=>{
+		if(selecteds.length > 0){
+			selecteds.forEach(selected=>{
+				addToList(selected.id, noCarrinho)
+			})
+			saveListOnServer(noCarrinho)
+			renderTable(tabela2, getRows(noCarrinho, paraComprar))
+		}else{
+			alert("É necessário selecionar algum item!")
+		}
+	})
+	
+	document.querySelector("#btn-update").addEventListener("click", ()=>{
+		if(selecteds.length > 0){
+			let url = window.location.href + "index/udt/"
+			selecteds.forEach(selected=>{
+				url += `id/${selected.id}/`
+			})
+			console.log(url)
+			window.location.href = url
+		}else{
+			alert("É necessário selecionar algum item!")
+		}
+	})
+	
+	document.querySelector("#btn-delete").addEventListener("click", ()=>{
+		console.log("clicou")
+		if(selecteds.length > 0){
+			let url = window.location.href + "index/del/"
+			selecteds.forEach(selected=>{
+				url += `id/${selected.id}/`
+			})
+			console.log(url)
+			window.location.href = url
+		}else{
+			alert("É necessário selecionar algum item!")
+		}
+	})
 })
 
 function renderTable(tabela, listaLinhas){
@@ -80,21 +117,24 @@ function renderTable(tabela, listaLinhas){
 	const row = document.createElement("tr")
 	
 	//limpa tabela
-	while (tabela.firstChild) {
-	  tabela.removeChild(tabela.firstChild);
+	
+	if(tabela !== null){
+		while (tabela.firstChild) {
+		  tabela.removeChild(tabela.firstChild);
+		}
+		
+		//acrescenta títulos
+		row.setAttribute("class", "title")
+		titles.forEach(th=>{
+			row.appendChild(th)
+		})
+		tabela.appendChild(row)
+		
+		//acrescenta linhas
+		listaLinhas.forEach(linha=>{
+			tabela.appendChild(linha)
+		})
 	}
-	
-	//acrescenta títulos
-	row.setAttribute("class", "title")
-	titles.forEach(th=>{
-		row.appendChild(th)
-	})
-	tabela.appendChild(row)
-	
-	//acrescenta linhas
-	listaLinhas.forEach(linha=>{
-		tabela.appendChild(linha)
-	})
 }
 
 function avoidDoubleItens(toExcludeList, mainList){
@@ -128,19 +168,25 @@ function getRows(idList, rows){
 }
 
 function getTitlesFromTable(table){
-	return table.querySelectorAll("th")
+	if(table !== null){
+		return table.querySelectorAll("th")
+	}else{
+		return []
+	}
 }
 
 function getRowsFromTable(table){	
-	const rows = table.querySelectorAll("tr")
 	const response = []
 	
-	rows.forEach(row=>{
-		if(row.className !== "titles"){
-			response.push(row)
-		}
+	if(table !== null){
+		const rows = table.querySelectorAll("tr")
 	
-	})
+		rows.forEach(row=>{
+			if(row.className !== "titles"){
+				response.push(row)
+			}		
+		})
+	}	
 	
 	return response
 }

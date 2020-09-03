@@ -56,10 +56,24 @@ class Start{
         }else 
             self::$act = 'main';
         
+        $count = 0;
+        $keys = array();
         for ($i=2; $i<=count($brk); $i=$i+2):
-            if(key_exists($i+1, $brk))    
-                self::$params[$brk[$i]] = $brk[$i+1];
+            if(key_exists($i+1, $brk))  {
+                $keys[$count] = $brk[$i];
+                $values[$count] = $brk[$i+1];
+                $count++;
+            }
         endfor;
+        
+        self::$params = array();
+        foreach($keys as $id=>$key){
+            self::$params[$key][$id] = $values[$id];
+        }
+        foreach(self::$params as $key=>$values){
+            if(count($values) == 1)
+                self::$params[$key] = $values[0];
+        }
     }
     
     private static function ifNoFriendly(){

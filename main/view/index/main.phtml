@@ -15,6 +15,27 @@ $data = HelperView::getViewData();
 <nav id="commands">
 	<?php echo $data['link']['add']?>
 	<?php echo $data['link']['hst']?>
+	<button id="btn-toBasket" class="button tooltip check">
+		<img alt="para a sesta" src="page/img/transparency.png">
+		<span class="ttp_text">
+			<b>Marca como Comprado</b>
+			Envia para a tabela "No Carrinho" os itens selecionados
+		</span>
+	</button>
+	<button id="btn-update" class="button tooltip udt">
+		<img alt="para a sesta" src="page/img/transparency.png">
+		<span class="ttp_text">
+			<b>Edita</b>
+			Atualiza as informações dos itens selecionados
+		</span>
+	</button>
+	<button id="btn-delete" class="button tooltip del">
+		<img alt="para a sesta" src="page/img/transparency.png">
+		<span class="ttp_text">
+			<b>Exclui</b>
+			Remove da lista os itens selecionados
+		</span>
+	</button>
 	<?php include_once PATH_INCLUDE.'busca.phtml';?>
 </nav>
 

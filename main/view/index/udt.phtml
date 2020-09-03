@@ -1,0 +1,11 @@
+<?php
+/**
+ * @version 25/08/2020 16:12:26
+ * @author jose_helio@gmail.com
+ *
+ */
+$data = HelperView::getViewData();
+?>
+<h2>Edita</h2>
+<?php echo HelperView::printAlert()?>
+<?php foreach ($data['form'] as $form){echo $form;}?>

@@ -60,10 +60,23 @@ abstract class Controller_Class{
             HelperView::setRenderFalse();
         $view = array();
         
-        $this->item = $this->_model->readOne("tbl.id={$this->id}");
+        if(is_array($this->id)){
+            foreach ($this->id as $id)
+                $this->item[] = $this->_model->readOne("tbl.id={$id}");
+        }else
+            $this->item = $this->_model->readOne("tbl.id={$this->id}");
         
-        $this->_form->populate($this->item);
-        $view['form'] = $this->_form;
+        if(is_array($this->id)){
+            foreach ($this->item as $item){
+                $this->setForm(); 
+                $this->_form->populate($item);
+                $view['form'][] = $this->_form;
+            }
+        }else{
+            $this->_form->populate($this->item);
+            $view['form'] = $this->_form;
+        }
+        
         
         if($this->_form->isSubmitedForm()){
             $res = $this->_model->update($this->getValues(), "id={$this->id}");
