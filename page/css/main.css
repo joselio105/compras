@@ -1,26 +1,24 @@
 :root {
-    --color-background: #F0F0F7;
-    --color-primary-lighter: #9871F5;
-    --color-primary-light: #916BEA;
-    --color-primary: #8257E5; /*OK*/
-    --color-primary-dark: #774DD6;
-    --color-primary-darker: #6842c2;
-    --color-secondary-light: #80ff80; /*OK*/
-    --color-secondary: #04D361; /*OK*/
-    --color-secondary-dark: #04BF58; /*OK*/
-    --color-title-in-primary: #FFFFFF; /*OK*/
-    --color-text-in-primary: #D4C2FF; /*OK*/
-    --color-text-title: #32264D; /*OK*/
-    --color-text-complement: #9C98A6; /*OK*/
-    --color-text-base: #6A6180; /*OK*/
-    --color-line-in-white: #E6E6F0; /*OK*/
-    --color-input-background: #F8F8FC;
-    --color-button-text: #FFFFFF; /*OK*/
-    --color-box-base: #FFFFFF; /*OK*/
-    --color-box-footer: #FAFAFC;
-    --color-small-info: #C1BCCC; /*OK*/
+    --color-background: #212121;
+    --color-primary-light: #FFC046;
+    --color-primary: #FF8F00;
+    --color-primary-dark: #C56000;
+    --color-secondary-light: #5DDEF4;
+    --color-secondary: #00ACC1;
+    --color-secondary-dark: #007C91;
+    --color-title-in-primary: #FFFFFF;
+    --color-text-in-primary: #3A3A3A;
+    --color-text-title: #CDCDCD;
+    --color-text-complement: #A3A3A3;
+    --color-text-base: #BABABA;
+    --color-line-in-white: #999999;
+    --color-input-background: #353535;
+    --color-button-text: #FFFFFF;
+    --color-box-base: #263238;
+    --color-box-footer: #455A64;
+    --color-small-info: #A3A3A3;
 
-    /* Fonte padrão 16px - 100% - 1rem */
+    /* Fonte padrï¿½o 16px - 100% - 1rem */
     font-size: 60%; /* controle das medidas rem */
 }
 
@@ -40,6 +38,7 @@ body{
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
+    background: var(--color-box-base);
 }
 
 body, input, button, textarea{

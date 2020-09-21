@@ -9,11 +9,11 @@
 	left: 10%;
 	position: absolute;
 	min-width: 15rem;
-	background: var(--color-small-info);
+	color: var(--color-text-base);
 	font-weight: 400;
 	font-size: 1.2rem;
 	border-radius: .8rem;
-	color: var(--color-text-base);
+	background: var(--color-box-footer);
 	text-transform: capitalize;
 	z-index: 150;
 }

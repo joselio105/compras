@@ -1,7 +1,8 @@
 main{
     width: 100vw;
     max-width: 700px;
-    padding: 0 1.2rem;
+	padding: 0 1.2rem;
+	background: var(--color-background);
 }
 
 main h2{
@@ -93,15 +94,47 @@ table, tr, th, td{
 th{
 	background-color: var(--color-primary);
 	color: var(--color-title-in-primary);
-	font-size: 1.4rem
+	font-size: 1.4rem;
+	padding: 1.2rem;
 }
 
 td{
 	font-size: 1.2rem;
+	padding: .8rem;
+}
+
+td.multi-content{
+	width: 100%;
+	border: 0;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+td.multi-content .actions{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-right: 1.2rem;
+	width: 1.2rem;
+	overflow: hidden;
+	background: var(--color-secondary);
+	transition: "width" .99s;
+}
+
+td.multi-content .actions:hover{
+	width: auto;
+	background: transparent;
+	overflow: visible;
+}
+
+td.multi-content .actions a{
+	margin: 0 .8rem;
 }
 
 main table .selected{
-	background-color: var(--color-secondary-light);
+	background-color: var(--color-secondary-dark);
+	color: var(--color-text-complement);
 }
 
 main table .hide{
@@ -151,6 +184,7 @@ main form div textarea{
 	font-size: 1.8rem;
 	font-weight: 400;
 	color: var(--color-text-base);
+	background: var(--color-input-background);
 	border: 1px solid var(--color-line-in-white);
 }
 

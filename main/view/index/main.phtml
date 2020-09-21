@@ -1,12 +1,11 @@
 <?php
 /**
- * @version 17/08/2020 16:53:22
+ * @version 21/09/2020 16:53:22
  * @author jose_helio@gmail.com
  *
  */
 
 $data = HelperView::getViewData();
-//var_dump($data['lista']);die;
 ?>
 
 
@@ -14,28 +13,7 @@ $data = HelperView::getViewData();
 
 <nav id="commands">
 	<?php echo $data['link']['add']?>
-	<?php echo $data['link']['hst']?>
-	<button id="btn-toBasket" class="button tooltip check">
-		<img alt="para a sesta" src="page/img/transparency.png">
-		<span class="ttp_text">
-			<b>Marca como Comprado</b>
-			Envia para a tabela "No Carrinho" os itens selecionados
-		</span>
-	</button>
-	<button id="btn-update" class="button tooltip udt">
-		<img alt="para a sesta" src="page/img/transparency.png">
-		<span class="ttp_text">
-			<b>Edita</b>
-			Atualiza as informações dos itens selecionados
-		</span>
-	</button>
-	<button id="btn-delete" class="button tooltip del">
-		<img alt="para a sesta" src="page/img/transparency.png">
-		<span class="ttp_text">
-			<b>Exclui</b>
-			Remove da lista os itens selecionados
-		</span>
-	</button>
+	
 	<?php include_once PATH_INCLUDE.'busca.phtml';?>
 </nav>
 
@@ -52,30 +30,22 @@ $data = HelperView::getViewData();
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr id="<?php echo $l["id"]?>">      
-            <td width="50%">
-            	<b><?php echo $l['produto_nome']?></b>
-				<?php echo substr($l['nome'], strlen($l['produto_nome'])+1)?>
+            <td width="50%" class="multi-content">
+                <div class="actions">
+                    <?php echo $data['link']['udt'][$l['id']]?>
+                    <?php echo $data['link']['del'][$l['id']]?>
+                </div>
+                <div class="contents">
+                    <b><?php echo $l['produto_nome']?></b>
+				    <?php echo substr($l['nome'], strlen($l['produto_nome'])+1)?>
+                </div>
+            	
             </td>
             <td width="10%"><?php echo $l['quantidade']?></td>
             <td width="20%"><?php echo HelperData::printLikeMoney($l['preco'])?></td>
-            <td width="20%"><?php echo HelperData::printLikeMoney($l['preco']*$l['quantidade'])?></td>  
+            <td width="20%"><?php echo HelperData::printLikeMoney($l['total'])?></td>  
         </tr>
         <?php endforeach?>
     </table>
 <?php endif?>
-</div>
-
-<div id="comprados">
-    <h2>No Carrinho</h2>
-    <div class="table">
-    	<table id="comprados-table">
-        	<tr class="titles">
-                <th>Produto</th>
-                <th>Quant</th>
-                <th>Preço Unit.</th>
-                <th>Preço Total</th>
-          	</tr>
-      	</table>
-    </div>
-    <button id="cleanBasket" class="button">Limpar</button>
 </div>
