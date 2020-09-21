@@ -19,21 +19,25 @@ $data = HelperView::getViewData();
 <?php if(key_exists('lista', $data)):?>
 	<table>
     	<tr>
-            <th></th>
             <th>Produto</th>
             <th>Última Quantidade</th>
             <th>Último Preço</th>
             <th>Última Compra</th>
-            <th></th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr>
-            <td><?php echo $data['link']['check'][$l['id']]?></td>            
-            <td><?php echo $l['nome']?></td>
-            <td><?php echo $l['lastQtd']?></td>
-            <td><?php echo HelperData::printLikeMoney($l['lastPreco'])?></td>
-            <td><?php echo date('d/m/Y', strtotime($l['lastDate']))?></td>
-            <td><?php echo $data['link']['view'][$l['id']]?></td>
+            <td class="multi-content" width="50%">
+                <div class="actions">
+                    <?php echo $data['link']['check'][$l['id']]?>
+                    <?php echo $data['link']['view'][$l['id']]?>
+                </div>
+                <div class="contents">
+                    <?php echo $l['nome']?>
+                </div>
+            </td>   
+            <td width="10%"><?php echo $l['lastQtd']?></td>
+            <td width="20%"><?php echo HelperData::printLikeMoney($l['lastPreco'])?></td>
+            <td width="20%"><?php echo date('d/m/Y', strtotime($l['lastDate']))?></td>
         </tr>
         <?php endforeach?>
     </table>

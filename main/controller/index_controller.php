@@ -29,7 +29,9 @@ final class index extends Controller_Class{
         $view['link']['hst']->setPermitions(HelperAuth::getPermitionByType(PERMITION_LEVEL_PUBLIC));
         
         $view['total'] = 0;
-        foreach ($view['lista'] as $l):
+        foreach ($view['lista'] as $i=>$l):
+            $l['quantidade'] = (strlen($l['quantidade'])==0 ? 0 : $l['quantidade']);
+            $l['preco'] = (strlen($l['preco'])==0 ? 0 : $l['preco']);
             foreach (array('del', 'udt', 'check') as $act):
             
                 $params = array('id'=>$l['id']);
@@ -44,7 +46,7 @@ final class index extends Controller_Class{
                     $view['link'][$act][$l['id']]->setTitle('Marca Item como Comprado');
                 
             endforeach;
-            
+            $view['lista'][$i]['total'] = $l['preco']*$l['quantidade'];
             $view['total']+= $l['preco']*$l['quantidade'];
         endforeach;
         

@@ -20,19 +20,22 @@ $data = HelperView::getViewData();
 <?php if(key_exists('lista', $data)):?>
 	<table>
     	<tr>
-            <th></th>
-            <th></th>
-            <th>Produto</th>
+            <th width="50%">Produto</th>
             <th>Tipo</th>
-            <th></th>
       	</tr>
       	<?php foreach ($data['lista'] as $l):?>
         <tr>
-            <td><?php echo $data['link']['add_list'][$l['id']]?></td>    
-            <td><?php echo $data['link']['udt'][$l['id']]?></td>        
-            <td><?php echo $l['nome']?></td>
+            <td class="multi-content">
+                <div class="actions">
+                    <?php echo $data['link']['add_list'][$l['id']]?>
+                    <?php echo $data['link']['udt'][$l['id']]?>
+                    <?php echo $data['link']['del'][$l['id']]?>
+                </div>
+                <div class="contents">
+                    <?php echo $l['nome']?>
+                </div>                
+            </td>   
             <td><?php echo $l['tipo_nome']?></td>
-            <td><?php echo $data['link']['del'][$l['id']]?></td>
         </tr>
         <?php endforeach?>
     </table>

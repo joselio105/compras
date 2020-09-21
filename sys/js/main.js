@@ -25,94 +25,58 @@
 
 window.addEventListener("load", () => {
 	const tabela1 = document.querySelector("#comprar-table")
-	const tabela2 = document.querySelector("#comprados-table")
-	const selecteds = []
-	const noCarrinho = readListOnServer()	
+	const selecteds = readListOnServer()
 	const paraComprar = getRowsFromTable(tabela1)
-	const paraComprarAinda = avoidDoubleItens(noCarrinho, paraComprar)
+	//saveListOnServer([])
+	console.log(selecteds)
 
-	renderTable(tabela1, paraComprarAinda)	
-	renderTable(tabela2, getRows(noCarrinho, paraComprar))
+	renderTable(tabela1, paraComprar, selecteds)	
 	
-	paraComprarAinda.forEach(linha=>{
+	paraComprar.forEach(linha=>{
 		let clickNum = 0
 		linha.addEventListener("click", ()=>{
 			
 			const actions = {
 				0: ()=>{
-					console.log(`Clique ${clickNum} - Selecionar linha#${linha.id}`)
-					linha.className = "selected"
-					addToList(linha, selecteds)
-					clickNum = 1
+					if(linha.className != "selected"){
+						clickNum = selectRow(linha, selecteds)
+					}else{
+						clickNum = unselectRow(linha, selecteds)
+					}
 				},
 				1: ()=>{
-					console.log(`Clique ${clickNum} - Deselecionar linha#${linha.id}`)
-					linha.className = ""	
-					removeFromList(linha, selecteds)
-					clickNum = 0
-				},
-				2: ()=>{
-					console.log(`Clique ${clickNum} - Enviar para o carrinho a linha#${linha.id}`)
-					addToList(linha.id, noCarrinho)
-					saveListOnServer(noCarrinho)
-					renderTable(tabela2, getRows(noCarrinho, paraComprar))
-					clickNum = 1
+					if(linha.className != "selected"){
+						clickNum = selectRow(linha, selecteds)
+					}else{
+						clickNum = unselectRow(linha, selecteds)
+					}
 				}
 			}
 			
 			actions[clickNum]()
 		})
 	})
-	
-	document.querySelector("#cleanBasket").addEventListener("click", ()=>{
-		saveListOnServer([])
-		const noCarrinho = readListOnServer()
-		renderTable(tabela1, paraComprarAinda)	
-		renderTable(tabela2, getRows(noCarrinho, paraComprar))
-		
-	})
-	
-	document.querySelector("#btn-toBasket").addEventListener("click", ()=>{
-		if(selecteds.length > 0){
-			selecteds.forEach(selected=>{
-				addToList(selected.id, noCarrinho)
-			})
-			saveListOnServer(noCarrinho)
-			renderTable(tabela2, getRows(noCarrinho, paraComprar))
-		}else{
-			alert("É necessário selecionar algum item!")
-		}
-	})
-	
-	document.querySelector("#btn-update").addEventListener("click", ()=>{
-		if(selecteds.length > 0){
-			let url = window.location.href + "index/udt/"
-			selecteds.forEach(selected=>{
-				url += `id/${selected.id}/`
-			})
-			console.log(url)
-			window.location.href = url
-		}else{
-			alert("É necessário selecionar algum item!")
-		}
-	})
-	
-	document.querySelector("#btn-delete").addEventListener("click", ()=>{
-		console.log("clicou")
-		if(selecteds.length > 0){
-			let url = window.location.href + "index/del/"
-			selecteds.forEach(selected=>{
-				url += `id/${selected.id}/`
-			})
-			console.log(url)
-			window.location.href = url
-		}else{
-			alert("É necessário selecionar algum item!")
-		}
-	})
 })
 
-function renderTable(tabela, listaLinhas){
+function selectRow(row, selecteds){
+	console.log(`Clique 0 - Selecionar linha#${row.id}`)
+	row.className = "selected"
+	addToList(row.id, selecteds)
+	saveListOnServer(selecteds)
+
+	return 1
+}
+
+function unselectRow(row, selecteds){
+	console.log(`Clique 1 - Deselecionar linha#${row.id}`)
+	row.className = ""	
+	removeFromList(row.id, selecteds)
+	saveListOnServer(selecteds)
+	
+	return 0
+}
+
+function renderTable(tabela, listaLinhas, selecteds){
 	const titles = getTitlesFromTable(tabela)
 	const row = document.createElement("tr")
 	
@@ -132,26 +96,12 @@ function renderTable(tabela, listaLinhas){
 		
 		//acrescenta linhas
 		listaLinhas.forEach(linha=>{
+			if(selecteds.indexOf(linha.id) !== -1){
+				linha.className = "selected"
+			}
 			tabela.appendChild(linha)
 		})
 	}
-}
-
-function avoidDoubleItens(toExcludeList, mainList){
-	let response = []
-	
-	mainList.forEach(item=>{
-		toExcludeList.forEach(toExclude=>{
-			if(toExclude !== item.id){
-				response.push(item)
-			}
-		})
-		if(toExcludeList.length === 0){
-			response = mainList
-		}
-	})
-	
-	return response
 }
 
 function getRows(idList, rows){
@@ -196,7 +146,7 @@ function saveListOnServer(noCarrinho){
 }
 
 function readListOnServer(){
-	return JSON.parse(localStorage.getItem("noCarrinho"))
+	return JSON.parse(localStorage.getItem("noCarrinho")) || []
 }
 
 function addToList(element, list){
